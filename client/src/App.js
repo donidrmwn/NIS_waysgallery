@@ -67,14 +67,14 @@ function App() {
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route element={<PrivateRouteLogin />}>
-              <Route path='/home' element={<><Navibar /><HomePage /></>} />
-              <Route path='/detail-post' element={<><Navibar /><DetailPostPage /></>} />
-              <Route path='/profile' element={<><Navibar /><ProfilePage /></>} />
-              <Route path='/upload' element={<><Navibar /><AddPostPage /></>} />
-              <Route path='/send-project' element={<><Navibar /><SendProjectPage /></>} />
-              <Route path='/edit-profile' element={<><Navibar /><EditProfilePage /></>} />
-              <Route path='/hired' element={<><Navibar /><HiredPage /></>} />
-              <Route path='/order' element={<><Navibar /><OrderPage /></>} />
+              <Route path='/home' element={<><HomePage /></>} />
+              <Route path='/detail-post' element={<><DetailPostPage /></>} />
+              <Route path='/profile/:user' element={<><ProfilePage /></>} />
+              <Route path='/upload' element={<><AddPostPage /></>} />
+              <Route path='/send-project' element={<><SendProjectPage /></>} />
+              <Route path='/edit-profile' element={<><EditProfilePage /></>} />
+              <Route path='/hired' element={<><HiredPage /></>} />
+              <Route path='/order' element={<><OrderPage /></>} />
             </Route>
           </Routes>
         </>

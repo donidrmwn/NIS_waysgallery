@@ -4,8 +4,12 @@ import Brand from "../Brand/Brand";
 import BrandImage from "../Brand/BrandImage";
 import DropdownUser from "./DropdownUser";
 
+import { useEffect } from "react";
+import { useState } from "react";
+
 export default function Navibar() {
     const navigate = useNavigate();
+ 
     return (
         <Navbar className="mb-3 px-5">
             <Container fluid>

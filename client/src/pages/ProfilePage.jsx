@@ -1,6 +1,8 @@
-import { useState } from "react"
+
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap"
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useParams } from "react-router-dom";
+import { useQuery } from 'react-query';
+import { API } from '../config/api';
 
 export default function ProfilePage() {
     const style = {
@@ -21,21 +23,27 @@ export default function ProfilePage() {
             height: "328px"
         }
     }
-    
 
-    const [isUserLogin] = useState(true)
+    
     const navigate = useNavigate();
+    let { user } = useParams();
+    let { data: profile } = useQuery("profileCache", async () => {
+        const response = await API.get("/profile/user");
+        return response.data.data;
+    })
+
+
     return (
         <>
-        
+
             <div style={style.rectangle17} className="rounded"></div>
             <Container fluid className="px-5 mt-5">
                 <Row className="mb-4">
                     <Col md="6">
-                        <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${"/profile.png"}`} />
-                        <h5 className="fw-bold mb-4">Nama User Login</h5>
-                        <h1 className="fw-bold">Welcome to my Art</h1>
-                        {isUserLogin ?
+                        <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile.profile_picture}`} />
+                        <h5 className="fw-bold mb-4">{profile.name}</h5>
+                        <h1 className="fw-bold">{profile.greeting}</h1>
+                        {user == "my-profile" ?
                             <>
                                 <Button onClick={() => navigate("/edit-profile")} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
                             </>
@@ -53,7 +61,7 @@ export default function ProfilePage() {
                 </Row>
                 <Row>
                     <p className="fw-bold">
-                        {isUserLogin ?
+                        {user == "my-profile"  ?
                             <>
                                 My Works
                             </>
