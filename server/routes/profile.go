@@ -14,4 +14,5 @@ func ProfileRoutes(e *echo.Group) {
 	h := handlers.HandlerProfile(profileRepository)
 
 	e.GET("/profile/user", middleware.Auth(h.GetProfileByUserID))
+	e.PATCH("/profile", middleware.Auth(middleware.UploadFile(h.UpdateProfile, "profile_picture")))
 }

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap"
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
     const style = {
@@ -20,8 +21,10 @@ export default function ProfilePage() {
             height: "328px"
         }
     }
+    
 
     const [isUserLogin] = useState(true)
+    const navigate = useNavigate();
     return (
         <>
         
@@ -34,7 +37,7 @@ export default function ProfilePage() {
                         <h1 className="fw-bold">Welcome to my Art</h1>
                         {isUserLogin ?
                             <>
-                                <Button className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
+                                <Button onClick={() => navigate("/edit-profile")} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
                             </>
                             :
                             <div className="d-flex gap-3">
