@@ -5,15 +5,11 @@ import { UserContext } from '../../context/userContext'
 
 import { API, setAuthToken } from '../../config/api'
 import { useNavigate } from "react-router-dom";
-import { ProfileContext } from "../../context/profileContext";
 
 
 export default function Login({ switchLogin, onHide }) {
     const navigate = useNavigate();
-    
     const [state, dispatch] = useContext(UserContext);
-    const [profileState,dispatchProfile] = useContext(ProfileContext)
-
     const [message, setMessage] = useState(null);
     const [form, setForm] = useState({
         email: '',
