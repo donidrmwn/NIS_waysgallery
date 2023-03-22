@@ -1,0 +1,85 @@
+import LandingPage from './pages/LandingPage';
+import { Route, Routes, useNavigate } from 'react-router-dom'
+import Navibar from './components/Navibar/Navibar';
+import HomePage from './pages/HomePage';
+import { useContext, useEffect, useState } from 'react';
+import DetailPostPage from './pages/DetailPostPage';
+import ProfilePage from './pages/ProfilePage';
+import { Container } from 'react-bootstrap';
+import AddPostPage from './pages/AddPostPage';
+import EditProfilePage from './pages/EditProfilePage';
+import HiredPage from './pages/HiredPage';
+import SendProjectPage from './pages/SendProjectPage';
+import { API, setAuthToken } from './config/api';
+import { UserContext } from './context/userContext';
+import { PrivateRouteLogin } from './components/privateRoute';
+
+
+function App() {
+  const navigate = useNavigate();
+  const [state, dispatch] = useContext(UserContext)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const checkUser = async () => {
+    try {
+      const response = await API.get("/check-auth");
+      console.log("check auth", response)
+      let payload = response.data.data;
+      console.log(payload)
+      payload.token = localStorage.token;
+      dispatch({
+        type: "USER_SUCCESS",
+        payload,
+      });
+      setIsLoading(false)
+    } catch (error) {
+      dispatch({
+        type: "AUTH_ERROR",
+      });
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (state.isLogin === false) {
+        navigate('/');
+      }
+    }
+  }, [isLoading])
+
+  useEffect(() => {
+
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      checkUser();
+    } else {
+      setIsLoading(false)
+    }
+  }, []);
+
+  return (
+    <Container fluid="true" className='px-5'>
+
+      {isLoading ? null :
+        <>
+          <Routes>
+            <Route path='/' element={<LandingPage />} />
+            <Route element={<PrivateRouteLogin />}>
+              <Route path='/home' element={<><Navibar /><HomePage /></>} />
+              <Route path='/detail-post' element={<><Navibar /><DetailPostPage /></>} />
+              <Route path='/profile' element={<><Navibar /><ProfilePage /></>} />
+              <Route path='/add-post' element={<><Navibar /><AddPostPage /></>} />
+              <Route path='/send-project' element={<><Navibar /><SendProjectPage /></>} />
+              <Route path='/edit-profile' element={<><Navibar /><EditProfilePage /></>} />
+              <Route path='/hired' element={<><Navibar /><HiredPage /></>} />
+            </Route>
+          </Routes>
+        </>
+      }
+    </Container>
+
+  );
+}
+
+export default App;

@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+@font-face{
+  font-family:rockwell;
+  src:url("assets/fonts/rockwell/rockwell.ttf")
+
+}
+
+.main-input{
+  border-color: #5CA098 !important;
+  border-width: 2px !important;
+  background-color: #E7E7E7 !important;
+  font-size: 20px !important;
+}
+
+.brand{
+  font-family: rockwell !important;
+  font-weight: 400;
+}
+
+.btn-flat {
+  background-color: purple;
+  color: white;
+}
+
+*:focus {
+    outline: none;
+}
