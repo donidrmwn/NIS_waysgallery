@@ -129,8 +129,9 @@ func (h *handlerAuth) Login(c echo.Context) error {
 	}
 
 	loginResponse := authdto.LoginResponse{
-		Email: user.Email,
-		Token: token,
+		Email:   user.Email,
+		Token:   token,
+		Profile: user.Profile,
 	}
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{

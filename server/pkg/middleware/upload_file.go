@@ -36,11 +36,11 @@ func UploadFile(next echo.HandlerFunc, imageKey string) echo.HandlerFunc {
 			data := tempFile.Name()
 			//filename := data[8:] // split uploads/
 
-			c.Set("dataFile", data)
+			c.Set(imageKey, data)
 			return next(c)
 		}
 
-		c.Set("dataFile", "")
+		c.Set(imageKey, "")
 		return next(c)
 	}
 }

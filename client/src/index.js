@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserContextProvider } from './context/userContext';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ProfileContextProvider } from './context/profileContext';
 
 
 const client = new QueryClient();
@@ -15,11 +16,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserContextProvider>
-      <QueryClientProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
+      <ProfileContextProvider>
+        <QueryClientProvider client={client}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </ProfileContextProvider>
     </UserContextProvider>
   </React.StrictMode>
 );
