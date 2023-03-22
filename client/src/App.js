@@ -10,6 +10,7 @@ import AddPostPage from './pages/AddPostPage';
 import EditProfilePage from './pages/EditProfilePage';
 import HiredPage from './pages/HiredPage';
 import SendProjectPage from './pages/SendProjectPage';
+import OrderPage from './pages/OrderPage'
 import { API, setAuthToken } from './config/api';
 import { UserContext } from './context/userContext';
 import { PrivateRouteLogin } from './components/privateRoute';
@@ -69,10 +70,11 @@ function App() {
               <Route path='/home' element={<><Navibar /><HomePage /></>} />
               <Route path='/detail-post' element={<><Navibar /><DetailPostPage /></>} />
               <Route path='/profile' element={<><Navibar /><ProfilePage /></>} />
-              <Route path='/add-post' element={<><Navibar /><AddPostPage /></>} />
+              <Route path='/upload' element={<><Navibar /><AddPostPage /></>} />
               <Route path='/send-project' element={<><Navibar /><SendProjectPage /></>} />
               <Route path='/edit-profile' element={<><Navibar /><EditProfilePage /></>} />
               <Route path='/hired' element={<><Navibar /><HiredPage /></>} />
+              <Route path='/order' element={<><Navibar /><OrderPage /></>} />
             </Route>
           </Routes>
         </>

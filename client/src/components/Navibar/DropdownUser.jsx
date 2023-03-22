@@ -21,9 +21,8 @@ export default function DropdownUser() {
         dispatch({
             type: "LOGOUT"
         });
-
     }
-
+    
     useEffect(() => {
         if (!state.isLogin) {
             navigate("/")
@@ -35,12 +34,12 @@ export default function DropdownUser() {
                 <Image style={style.roundedImage} className="m-auto me-4" src={`${"/profile.png"}`} />
             }
             id="basic-nav-dropdown">
-            <NavDropdown.Item className="py-2 me-5 fw-bold">
+            <NavDropdown.Item as={Button} onClick={() => navigate("/profile")} className="py-2 me-5 fw-bold">
                 <Image style={style.dropDownIcon} src="/user 1.png" className="m-auto me-3" />
                 Profile
             </NavDropdown.Item>
 
-            <NavDropdown.Item className="py-2 me-5 fw-bold">
+            <NavDropdown.Item as={Button} onClick={() => navigate("/order")} className="py-2 me-5 fw-bold">
                 <Image style={style.dropDownIcon} src="/transaction 1.png" className="m-auto me-3" />
                 Order
             </NavDropdown.Item>
