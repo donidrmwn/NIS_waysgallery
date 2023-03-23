@@ -14,8 +14,8 @@ type Post struct {
 	Title       string        `json:"title" gorm:"type: varchar(255)"`
 	Photo       PhotoResponse `json:"photos"`
 	Description string        `json:"description" gorm:"type: varchar(255)"`
-	CreatedAt   time.Time     `json:"-"`
-	UpdatedAt   time.Time     `json:"-"`
+	CreatedAt   time.Time     `json:"created_at"`
+	UpdatedAt   time.Time     `json:"updated_at"`
 }
 
 type PostResponse struct {

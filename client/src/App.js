@@ -60,10 +60,10 @@ function App() {
   }, []);
 
   return (
-    <Container style={{backgroundColor:"#F9F9F9"}} fluid="true" className='px-5 vh-100'>
 
+    <>
       {isLoading ? null :
-        <>
+        <Container style={{ backgroundColor: "#F9F9F9" }} fluid="true" className='px-5 vh-100'>
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route element={<PrivateRouteLogin />}>
@@ -77,9 +77,10 @@ function App() {
               <Route path='/order' element={<><OrderPage /></>} />
             </Route>
           </Routes>
-        </>
+        </Container>
+
       }
-    </Container>
+    </>
   );
 }
 

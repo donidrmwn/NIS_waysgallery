@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
+	"time"
 	photodto "waysgallery/dto/photo"
 	postdto "waysgallery/dto/post"
 	dto "waysgallery/dto/result"
@@ -92,5 +94,22 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
 		Data: postData,
+	})
+}
+
+func (h *handlerPost) FindTodayPosts(c echo.Context) error {
+	now := time.Now()
+
+	fmt.Println(now.Round(0))
+	posts, err := h.PostRepository.FindTodayPosts(now.Round(0))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: posts,
 	})
 }

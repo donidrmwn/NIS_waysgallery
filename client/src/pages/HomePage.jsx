@@ -1,8 +1,16 @@
 import { Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
 import PhotoAlbum from "react-photo-album";
+import { useQuery } from 'react-query';
 import photos from '../components/photos/photos';
+import { API } from '../config/api';
 import Gallery from '../utils/Gallery';
 export default function HomePage() {
+
+    let { data: posts } = useQuery("postsCache", async () => {
+        const response = await API.get("/post/today");
+        console.log("respon si post",response)
+        return response.data;
+    })
     return (
         <>
             <style type="text/css">
@@ -12,7 +20,7 @@ export default function HomePage() {
                 padding: 8px 45px
                 }`}
             </style>
-            
+
             <Container>
                 <Row className='d-flex'>
                     <Col>
@@ -41,8 +49,8 @@ export default function HomePage() {
                         </Form>
                     </Col>
                 </Row>
-                <h3 className='my-5'>today's post</h3>               
-                <Gallery data={photos}/>
+                <h3 className='my-5'>today's post</h3>
+                <Gallery data={posts} />
             </Container>
         </>
     )

@@ -41,13 +41,11 @@ export default function AddPostPage() {
     const [previewImage2, setPreviewImage2] = useState(null)
     const [previewImage3, setPreviewImage3] = useState(null)
     const [previewImage4, setPreviewImage4] = useState(null)
-    const [previewImage5, setPreviewImage5] = useState(null)
 
     const [mainImage, setMainImage] = useState(null)
     const [image2, setImage2] = useState(null)
     const [image3, setImage3] = useState(null)
     const [image4, setImage4] = useState(null)
-    const [image5, setImage5] = useState(null)
 
     const [form, setForm] = useState({
 
@@ -232,15 +230,15 @@ export default function AddPostPage() {
                             name="description"
                         />
                         <Row className="d-flex justify-content-center gap-4 mt-5">
-                            <Button className='fw-bold' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>Cancel</Button>
+                            {isLoading ?
+                                <LoadingSpinner />
+                                :
+                                <>
+                                    <Button onClick={() => clearImageHolder()} className='fw-bold' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>Cancel</Button>
 
-                            <Button onClick={(e) => handleSubmit.mutate(e)} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>
-                                {isLoading ?
-                                    <LoadingSpinner />
-                                    :
-                                    <>Post</>
-                                }
-                            </Button>
+                                    <Button onClick={(e) => handleSubmit.mutate(e)} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Post</Button>
+                                </>
+                            }
                         </Row>
                     </Col>
                 </Row>

@@ -77,8 +77,9 @@ func (h *handlerAuth) Register(c echo.Context) error {
 	}
 
 	profile := models.Profile{
-		UserID: data.ID,
-		Name:   request.Name,
+		UserID:         data.ID,
+		Name:           request.Name,
+		ProfilePicture: "https://res.cloudinary.com/dumbwaysb44/image/upload/v1679579483/waysgallery/profile_izywsv.png",
 	}
 	h.ProfileRepository.CreateProfile(profile)
 
