@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap"
 import { API } from '../config/api'
 import Dropzone, { useDropzone } from 'react-dropzone'
@@ -50,6 +50,8 @@ export default function EditProfilePage() {
     });
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingProfilePicture, setIsLoadingProfilePicture] = useState(false)
+    const [isLoadingBestArt, setIsLoadingBestArt] = useState(false)
 
     async function getDataUpdate() {
         const responseProfile = await API.get('/profile/user')
@@ -107,15 +109,67 @@ export default function EditProfilePage() {
             setIsLoading(false)
         }
     })
+
+    const updateProfilePicture = useMutation(async (image) => {
+        try {
+            setIsLoadingProfilePicture(true)
+            const config = {
+                headers: {
+                    'Content-type': 'multipart/form-data',
+                },
+            };
+            const formData = new FormData();
+            formData.set("profile_picture", image[0])
+            const response = await API.patch(
+                '/profile', formData, config
+            );
+            refetch()
+            setIsLoadingProfilePicture(false)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+            setIsLoadingProfilePicture(false)
+        }
+    })
+
+    const updateBestArt = useMutation(async (image) => {
+        try {
+            setIsLoadingBestArt(true)
+            const config = {
+                headers: {
+                    'Content-type': 'multipart/form-data',
+                },
+            };
+            const formData = new FormData();
+            formData.set("best_art", image[0])
+            const response = await API.patch(
+                '/profile', formData, config
+            );
+            refetch()
+            setIsLoadingBestArt(false)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+            setIsLoadingBestArt(false)
+        }
+    })
+
+
+
+    let { data: profile, refetch } = useQuery("profileCache", async () => {
+        const response = await API.get("/profile/user");
+        return response.data.data;
+    })
+
+
     return (
         <>
             <Container className="p-5">
                 <Row className="d-flex gap-2">
-                    <Dropzone onDrop={acceptedFiles => {
-                        let url = URL.createObjectURL(acceptedFiles[0]);
-                        console.log(url)
+                    <Dropzone onDrop={best_art => {
+                        let url = URL.createObjectURL(best_art[0]);
                         setPreviewBestArt(url)
-                        setBestArt(acceptedFiles)
+                        updateBestArt.mutate(best_art)
                     }}>
                         {({ getRootProps, getInputProps }) => (
                             <Col className="col d-grid rounded p-0 align-items-center rounded"  {...getRootProps()} style={style.mainProjectImage}>
@@ -128,7 +182,10 @@ export default function EditProfilePage() {
                                         </h2>
                                     </>
                                     :
-                                    <Image style={style.mainBestArt} className="m-auto w-100" src={previewBestArt} />
+                                    isLoadingBestArt ?
+                                        <LoadingSpinner style={style.mainBestArt} />
+                                        :
+                                        <Image style={style.mainBestArt} className="m-auto w-100" src={previewBestArt} />
                                 }
                             </Col>
                         )}
@@ -137,7 +194,8 @@ export default function EditProfilePage() {
                         <Dropzone onDrop={profile_picture => {
                             let url = URL.createObjectURL(profile_picture[0]);
                             setPreviewProfilePicture(url)
-                            setProfilePicture(profile_picture)
+                            updateProfilePicture.mutate(profile_picture)
+
                         }}>
                             {({ getRootProps, getInputProps }) => (
                                 <div className="d-flex justify-content-center" {...getRootProps()}>
@@ -147,7 +205,12 @@ export default function EditProfilePage() {
                                             <Image style={style.cameraIcon} className="m-auto" src="/camera 1.png" />
                                         </Row>
                                         :
-                                        <Image style={style.profileUpload} className="m-auto" src={previewProfilePicture} />
+                                        isLoadingProfilePicture ?
+                                            <LoadingSpinner style={style.profileUpload} />
+                                            :
+                                            <Image style={style.profileUpload} className="m-auto" src={previewProfilePicture} />
+
+
                                     }
                                 </div>
                             )}

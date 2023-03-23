@@ -1,6 +1,7 @@
 import { Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
 import PhotoAlbum from "react-photo-album";
 import photos from '../components/photos/photos';
+import Gallery from '../utils/Gallery';
 export default function HomePage() {
     return (
         <>
@@ -40,8 +41,8 @@ export default function HomePage() {
                         </Form>
                     </Col>
                 </Row>
-                <h3 className='my-5'>today's post</h3>
-                <PhotoAlbum photos={photos} layout="masonry" />;
+                <h3 className='my-5'>today's post</h3>               
+                <Gallery data={photos}/>
             </Container>
         </>
     )

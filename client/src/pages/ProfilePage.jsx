@@ -1,6 +1,6 @@
 
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap"
-import { useNavigate , useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from 'react-query';
 import { API } from '../config/api';
 
@@ -24,7 +24,7 @@ export default function ProfilePage() {
         }
     }
 
-    
+
     const navigate = useNavigate();
     let { user } = useParams();
     let { data: profile } = useQuery("profileCache", async () => {
@@ -41,8 +41,8 @@ export default function ProfilePage() {
                 <Row className="mb-4">
                     <Col md="6">
                         <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
-                        <h5 className="fw-bold mb-4">{profile.name}</h5>
-                        <h1 className="fw-bold">{profile.greeting}</h1>
+                        <h5 className="fw-bold mb-4">{profile?.name}</h5>
+                        <h1 className="fw-bold">{profile?.greeting}</h1>
                         {user == "my-profile" ?
                             <>
                                 <Button onClick={() => navigate("/edit-profile")} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
@@ -56,12 +56,12 @@ export default function ProfilePage() {
 
                     </Col>
                     <Col md="5" className="d-flex justify-content-end">
-                        <Image className="w-100" style={{ height: "484px" }}src={`${profile?.best_art}`} />
+                        <Image className="w-100" style={{ height: "484px" }} src={`${profile?.best_art}`} />
                     </Col>
                 </Row>
                 <Row>
                     <p className="fw-bold">
-                        {user == "my-profile"  ?
+                        {user == "my-profile" ?
                             <>
                                 My Works
                             </>
@@ -71,7 +71,7 @@ export default function ProfilePage() {
                             </>
                         }
                     </p>
-                    <Row md="4" className="w-100 d-flex gap-3 justify-content-start mt-4 mb-5 p-2">
+                    <Row md="5" className="w-100 d-flex gap-3 justify-content-center mt-4 mb-5 p-2">
                         <Col>
                             <Card.Img variant="top" style={style.cardImage} src="/sample Image/Rectangle 15.png" />
                         </Col>

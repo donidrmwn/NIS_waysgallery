@@ -31,16 +31,19 @@ export default function DropdownUser() {
             navigate("/")
         }
     }, [state])
-    let { data: profile } = useQuery("profileCache", async () => {
+    let { data: profile, refetch } = useQuery("profileCache", async () => {
         setIsLoading(true)
         const response = await API.get("/profile/user");
         setIsLoading(false)
         return response.data.data;
     })
 
+    useEffect(() => {
+        refetch()
+    }, [])
     return (
         <>
-            {isLoading ? null :
+            
                 <NavDropdown
                     title={
                         <Image style={style.roundedImage} className="m-auto me-4" src={`${profile?.profile_picture}`} />
@@ -62,7 +65,7 @@ export default function DropdownUser() {
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>
-            }
+            
         </>
     )
 }
