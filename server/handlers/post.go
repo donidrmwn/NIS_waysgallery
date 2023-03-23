@@ -53,7 +53,7 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 	}
 	postData, err := h.PostRepository.CreatePost(post)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: "Error Repository:" + err.Error(),
 		})
@@ -62,12 +62,19 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 	var arrImage = [5]string{"main_image", "image_2", "image_3", "image_4", "image_5"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
+
+		if data == "main_image" && image == "" {
+			h.PostRepository.DeletePost(postData, postData.ID)
+			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+				Code:    http.StatusBadRequest,
+				Message: "Main image must be included",
+			})
+		}
+
 		var urlCloudinary string = ""
 		if image != "" {
 			resp, _ := cld.Upload.Upload(ctx, image, uploader.UploadParams{Folder: "waysgallery"})
-			if resp.SecureURL != "" {
-				urlCloudinary = resp.SecureURL
-			}
+			urlCloudinary = resp.SecureURL
 		}
 		photoRequest := photodto.CreatePhotoRequest{
 			PostID: postData.ID,
