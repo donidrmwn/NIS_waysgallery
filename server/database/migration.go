@@ -10,6 +10,8 @@ func RunMigration() {
 	err := postgres.DB.AutoMigrate(
 		&models.User{},
 		&models.Profile{},
+		&models.Photo{},
+		&models.Post{},
 	)
 
 	if err != nil {
