@@ -40,7 +40,7 @@ export default function ProfilePage() {
             <Container fluid className="px-5 mt-5">
                 <Row className="mb-4">
                     <Col md="6">
-                        <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile.profile_picture}`} />
+                        <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
                         <h5 className="fw-bold mb-4">{profile.name}</h5>
                         <h1 className="fw-bold">{profile.greeting}</h1>
                         {user == "my-profile" ?
@@ -56,7 +56,7 @@ export default function ProfilePage() {
 
                     </Col>
                     <Col md="5" className="d-flex justify-content-end">
-                        <Image className="w-100" style={{ height: "484px" }} src="/sample Image/Rectangle 10.png" />
+                        <Image className="w-100" style={{ height: "484px" }}src={`${profile?.best_art}`} />
                     </Col>
                 </Row>
                 <Row>
