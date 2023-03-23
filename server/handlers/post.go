@@ -59,20 +59,28 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 		})
 	}
 
-	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
+	var arrImage = [5]string{"main_image", "image_2", "image_3", "image_4", "image_5"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
-		resp, err := cld.Upload.Upload(ctx, image, uploader.UploadParams{Folder: "waysgallery"})
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
-				Code:    http.StatusBadRequest,
-				Message: err.Error(),
-			})
+		var urlCloudinary string = ""
+		if image != "" {
+			resp, _ := cld.Upload.Upload(ctx, image, uploader.UploadParams{Folder: "waysgallery"})
+			if resp.SecureURL != "" {
+				urlCloudinary = resp.SecureURL
+			}
 		}
+
+		// if err != nil {
+		// 	return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+		// 		Code:    http.StatusBadRequest,
+		// 		Message: "Upload Cloudinary Error: " + err.Error(),
+		// 	})
+		// }
+
 		photoRequest := photodto.CreatePhotoRequest{
 			PostID: postData.ID,
 			LineNo: idx,
-			Photo:  resp.SecureURL,
+			Photo:  urlCloudinary,
 		}
 		photo := models.Photo{
 			PostID: photoRequest.PostID,

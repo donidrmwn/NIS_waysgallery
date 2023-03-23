@@ -19,5 +19,6 @@ func PostRoutes(e *echo.Group) {
 			middleware.UploadFile(
 				middleware.UploadFile(
 					middleware.UploadFile(
-						h.CreatePost, "image_4"), "image_3"), "image_2"), "main_image")))
+						middleware.UploadFile(
+							h.CreatePost, "image_5"), "image_4"), "image_3"), "image_2"), "main_image")))
 }
