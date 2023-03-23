@@ -69,14 +69,6 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 				urlCloudinary = resp.SecureURL
 			}
 		}
-
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, dto.ErrorResult{
-		// 		Code:    http.StatusBadRequest,
-		// 		Message: "Upload Cloudinary Error: " + err.Error(),
-		// 	})
-		// }
-
 		photoRequest := photodto.CreatePhotoRequest{
 			PostID: postData.ID,
 			LineNo: idx,
