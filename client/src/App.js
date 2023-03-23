@@ -60,7 +60,7 @@ function App() {
   }, []);
 
   return (
-    <Container fluid="true" className='px-5'>
+    <Container style={{backgroundColor:"#F9F9F9"}} fluid="true" className='px-5 vh-100'>
 
       {isLoading ? null :
         <>
@@ -80,7 +80,6 @@ function App() {
         </>
       }
     </Container>
-
   );
 }
 
