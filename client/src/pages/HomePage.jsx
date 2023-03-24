@@ -8,7 +8,6 @@ export default function HomePage() {
 
     let { data: posts } = useQuery("postsCache", async () => {
         const response = await API.get("/post/today");
-        console.log("respon si post",response)
         return response.data;
     })
     return (
@@ -50,7 +49,8 @@ export default function HomePage() {
                     </Col>
                 </Row>
                 <h3 className='my-5'>today's post</h3>
-                <Gallery data={posts} />
+                
+                <Gallery  data={posts} />
             </Container>
         </>
     )
