@@ -10,7 +10,7 @@ export function PrivateRouteLogin() {
     }
     return (
         <>
-            <Navibar />
+            <Navibar state={state} />
             <Outlet />
         </>
     )

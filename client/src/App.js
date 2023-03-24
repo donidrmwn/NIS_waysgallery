@@ -23,6 +23,7 @@ function App() {
 
   const checkUser = async () => {
     try {
+     
       const response = await API.get("/check-auth");
       let payload = response.data.data;
       payload.token = localStorage.token;
@@ -64,13 +65,13 @@ function App() {
         <Container style={{ backgroundColor: "#F9F9F9" }} fluid="true" className='px-5 vh-100'>
           <Routes>
             <Route path='/' element={<LandingPage />} />
-            <Route element={<PrivateRouteLogin />}>
+            <Route element={<><PrivateRouteLogin /></>}>
               <Route path='/home' element={<><HomePage /></>} />
               <Route path='/detail-post/:id' element={<><DetailPostPage /></>} />
-              <Route path='/profile/:user' element={<><ProfilePage /></>} />
+              <Route path='/profile/:id' element={<><ProfilePage /></>} />
               <Route path='/upload' element={<><AddPostPage /></>} />
               <Route path='/send-project' element={<><SendProjectPage /></>} />
-              <Route path='/edit-profile' element={<><EditProfilePage /></>} />
+              <Route path='/edit-profile/:id' element={<><EditProfilePage /></>} />
               <Route path='/hired' element={<><HiredPage /></>} />
               <Route path='/order' element={<><OrderPage /></>} />
             </Route>

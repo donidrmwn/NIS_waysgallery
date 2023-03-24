@@ -8,4 +8,5 @@ type ProfileResponse struct {
 	ProfilePicture string              `json:"profile_picture" gorm:"type: varchar(255)"`
 	BestArt        string              `json:"best_art" gorm:"type: varchar(255)"`
 	User           models.UserResponse `json:"user" gorm:"foreignKey:UserID"`
+	UserID         int                 `json:"user_id" gorm:"type: integer"`
 }

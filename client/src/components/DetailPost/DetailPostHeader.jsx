@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
 
-export default function DetailPostHeader() {
+export default function DetailPostHeader({ user, title }) {
     const style = {
 
         roundedImage: {
@@ -9,19 +12,31 @@ export default function DetailPostHeader() {
             heigth: "60px",
         }
     }
+    const [state] = useContext(UserContext)
+    const userID = user?.id
+    const navigate = useNavigate("/")
+    console.log(userID == state.user.id)
+    const profile = user?.profile
     return (
         <>
-            <Row className="d-flex align-items-center mb-3">
+            <Row className="d-flex align-items-center mb-3 h-100">
                 <Col className="d-flex justify-content-start">
-                    <Image style={style.roundedImage} className="m-auto me-4" src={`${"/profile.png"}`} />
+                    <Image style={style.roundedImage} className="m-auto me-4" src={`${profile?.profile_picture}`} />
                     <Col>
-                        <p className="m-auto fw-bold">Robo-x landing Page</p>
-                        <p className="m-auto">Geralt</p>
+                        <p className="m-auto fw-bold">{title}</p>
+                        <p className="m-auto" onClick={() => navigate("/profile/"+userID)} style={{ cursor: "pointer" }}>{profile?.name}</p>
                     </Col>
                 </Col>
                 <Col className="d-flex gap-4 justify-content-end">
-                    <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#E7E7E7", border: "none", color: "black"}}>Follow</Button>
-                    <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
+                    {userID == state.user.id ?
+                        <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Edit Post</Button>
+                        :
+                        <>
+                            <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>Follow</Button>
+                            <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
+                        </>
+                    }
+
                 </Col>
             </Row>
         </>

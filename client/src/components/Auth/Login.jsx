@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login({ switchLogin, onHide }) {
     const navigate = useNavigate();
-    const [state, dispatch] = useContext(UserContext);
+    const [_, dispatch] = useContext(UserContext);
     const [message, setMessage] = useState(null);
     const [form, setForm] = useState({
         email: '',
@@ -52,11 +52,7 @@ export default function Login({ switchLogin, onHide }) {
         }
     })
 
-    useEffect(() => {
-        if (state.isLogin) {
-            console.log(state)
-        }
-    }, [state])
+
     return (
         <Container>
             {message && message}

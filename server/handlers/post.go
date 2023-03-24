@@ -62,7 +62,7 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 		})
 	}
 
-	var arrImage = [5]string{"main_image", "image_2", "image_3", "image_4", "image_5"}
+	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
 

@@ -3,6 +3,9 @@ import { Button, Card, Col, Container, Image, Row } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from 'react-query';
 import { API } from '../config/api';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/userContext";
+
 
 export default function ProfilePage() {
     const style = {
@@ -23,27 +26,30 @@ export default function ProfilePage() {
             height: "328px"
         }
     }
-
-
+    const [state] = useContext(UserContext)
     const navigate = useNavigate();
-    let { user } = useParams();
-    let endPoint = "/profile/user"
-    let endPointPost = "/post/user"
-    if (user != "my-profile") {
-        endPoint = "/profile/user/" + user
-    }
+    let { id } = useParams();
+    let endPoint = "/profile/user/" + id
 
-    let { data: profile } = useQuery("profileCache", async () => {
+
+
+
+    let { data: profile, refetch: refetchProfile } = useQuery("profile", async () => {
         const response = await API.get(endPoint);
         return response.data.data;
     })
+    
 
-
-    let { data: postProfile } = useQuery("postProfileCache", async () => {
-        const response = await API.get("/post/user");
+    let { data: postProfile, refetch: refetchPostProfile } = useQuery("postProfileCache", async () => {
+        const response = await API.get("/post/user/"+profile?.user_id);
         return response.data.data;
     })
 
+    useEffect(() => {
+        refetchProfile() 
+        refetchPostProfile()
+        console.log("post profile",postProfile)
+    }, [])
 
     return (
         <>
@@ -55,9 +61,9 @@ export default function ProfilePage() {
                         <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
                         <h5 className="fw-bold mb-4">{profile?.name}</h5>
                         <h1 className="fw-bold">{profile?.greeting}</h1>
-                        {user == "my-profile" ?
+                        {id == state.user.id ?
                             <>
-                                <Button onClick={() => navigate("/edit-profile")} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
+                                <Button onClick={() => navigate("/edit-profile/"+state.user.id)} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
                             </>
                             :
                             <div className="d-flex gap-3">
@@ -75,21 +81,22 @@ export default function ProfilePage() {
                 </Row>
                 <Row>
                     <p className="fw-bold">
-                        {user == "my-profile" ?
+                        {id == state.user.id ?
                             <>
                                 My Works
                             </>
                             :
                             <>
-                                Nama User Works
+                                {profile?.name} Works 
                             </>
                         }
                     </p>
                     <Row md="5" className="w-100 d-flex gap-3 justify-content-start mt-4 mb-5 p-2">
+                        {}
                         {postProfile?.map((item, index) => {
                             return (
                                 <Col key={index}>
-                                    <Card.Img src={item?.photos.photo} style={style.cardImage} />
+                                    <Card.Img src={item?.photos[0].photo} style={style.cardImage} />
                                 </Col>
                             )
                         })}

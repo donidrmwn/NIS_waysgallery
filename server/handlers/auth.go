@@ -130,6 +130,7 @@ func (h *handlerAuth) Login(c echo.Context) error {
 	}
 
 	loginResponse := authdto.LoginResponse{
+		ID:    user.ID,
 		Email: user.Email,
 		Token: token,
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strconv"
 	profiledto "waysgallery/dto/profile"
 	dto "waysgallery/dto/result"
 	"waysgallery/models"
@@ -32,20 +33,22 @@ func convertResponseProfile(u models.Profile) profiledto.ProfileResponse {
 		ProfilePicture: u.ProfilePicture,
 		BestArt:        u.BestArt,
 		User:           u.User,
+		UserID:         u.UserID,
 	}
 }
 
 func (h *handlerProfile) GetProfileByUserID(c echo.Context) error {
-	userLogin := c.Get("userLogin")
-	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
-	profile, err := h.ProfileRepository.GetProfileByUserID(int(UserID))
+	// userLogin := c.Get("userLogin")
+	// UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+	UserID := c.Param("id")
+	user_id, _ := strconv.Atoi(UserID)
+	profile, err := h.ProfileRepository.GetProfileByUserID(int(user_id))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),
 		})
 	}
-
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
 		Data: convertResponseProfile(profile),

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { useMutation, useQuery } from 'react-query';
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap"
 import { API } from '../config/api'
 import Dropzone, { useDropzone } from 'react-dropzone'
 import LoadingSpinner from "../components/LoadingSpinner";
+import { UserContext } from "../context/userContext";
 export default function EditProfilePage() {
     const style = {
         mainProjectImage: {
@@ -39,7 +40,7 @@ export default function EditProfilePage() {
     }
 
 
-
+    const [state] = useContext(UserContext)
     const [previewBestArt, setPreviewBestArt] = useState(null)
     const [previewProfilePicture, setPreviewProfilePicture] = useState(null)
     const [bestArt, setBestArt] = useState(null)
@@ -54,7 +55,7 @@ export default function EditProfilePage() {
     const [isLoadingBestArt, setIsLoadingBestArt] = useState(false)
 
     async function getDataUpdate() {
-        const responseProfile = await API.get('/profile/user')
+        const responseProfile = await API.get('/profile/user/'+state.user.id)
         setPreviewBestArt(`${responseProfile.data.data.best_art}`)
         setPreviewProfilePicture(`${responseProfile.data.data.profile_picture}`)
         setForm({
@@ -156,8 +157,8 @@ export default function EditProfilePage() {
 
 
 
-    let { data: profile, refetch } = useQuery("profileCache", async () => {
-        const response = await API.get("/profile/user");
+    let { refetch } = useQuery("profileCache", async () => {
+        const response = await API.get("/profile/user/"+state.user.id);
         return response.data.data;
     })
 

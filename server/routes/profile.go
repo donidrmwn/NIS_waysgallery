@@ -13,7 +13,7 @@ func ProfileRoutes(e *echo.Group) {
 	profileRepository := repositories.RepositoryProfile(postgres.DB)
 	h := handlers.HandlerProfile(profileRepository)
 
-	e.GET("/profile/user", middleware.Auth(h.GetProfileByUserID))
+	e.GET("/profile/user/:id", h.GetProfileByUserID)
 	e.PATCH("/profile", middleware.Auth(middleware.UploadFile(middleware.UploadFile(h.UpdateProfile, "profile_picture"), "best_art")))
 	e.PATCH("/profile/best-art", middleware.Auth(middleware.UploadFile(h.UpdateProfile, "best_art")))
 }

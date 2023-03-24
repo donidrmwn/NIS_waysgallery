@@ -73,14 +73,14 @@ export default function AddPostPage() {
                 },
             };
             const formData = new FormData();
-            console.log(mainImage)
+            
             formData.set('main_image', !mainImage ? "" : mainImage)
             formData.set('image_2', !image2 ? "" : image2)
             formData.set('image_3', !image3 ? "" : image3)
             formData.set('image_4', !image4 ? "" : image4)
             formData.set('title', form.title);
             formData.set('description', form.description);
-            console.log(formData)
+
             const response = await API.post(
                 '/post/user', formData, config
             );
@@ -231,7 +231,7 @@ export default function AddPostPage() {
                         />
                         <Row className="d-flex justify-content-center gap-4 mt-5">
                             {isLoading ?
-                                <div className="m-auto">
+                                <div className="m-auto d-flex justify-content-center">
                                     <LoadingSpinner />
                                 </div>
                                 :
