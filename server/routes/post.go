@@ -14,7 +14,9 @@ func PostRoutes(e *echo.Group) {
 	photoRepository := repositories.RepositoryPhoto(postgres.DB)
 	h := handlers.HandlerPost(postRepository, photoRepository)
 
+	e.GET("/post/user", middleware.Auth(h.FindUserPosts))
 	e.GET("/post/today", h.FindTodayPosts)
+	e.GET("/post/:id", h.GetPost)
 	e.POST("/post/user", middleware.Auth(
 		middleware.UploadFile(
 			middleware.UploadFile(

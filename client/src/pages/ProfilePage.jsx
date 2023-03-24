@@ -13,7 +13,7 @@ export default function ProfilePage() {
             right: "0",
             top: "121px",
             backgroundColor: "#2FC4B2",
-            
+
         }, roundedImage: {
             borderRadius: "100%",
             width: "120px",
@@ -27,8 +27,20 @@ export default function ProfilePage() {
 
     const navigate = useNavigate();
     let { user } = useParams();
+    let endPoint = "/profile/user"
+    let endPointPost = "/post/user"
+    if (user != "my-profile") {
+        endPoint = "/profile/user/" + user
+    }
+
     let { data: profile } = useQuery("profileCache", async () => {
-        const response = await API.get("/profile/user");
+        const response = await API.get(endPoint);
+        return response.data.data;
+    })
+
+
+    let { data: postProfile } = useQuery("postProfileCache", async () => {
+        const response = await API.get("/post/user");
         return response.data.data;
     })
 
@@ -56,9 +68,9 @@ export default function ProfilePage() {
 
                     </Col>
                     <Col md="5" className="d-flex justify-content-end">
-                       
-                       
-                        <Image className="w-100" style={{ height: "484px",zIndex:1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
+
+
+                        <Image className="w-100" style={{ height: "484px", zIndex: 1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
                     </Col>
                 </Row>
                 <Row>
@@ -73,20 +85,14 @@ export default function ProfilePage() {
                             </>
                         }
                     </p>
-                    <Row md="5" className="w-100 d-flex gap-3 justify-content-center mt-4 mb-5 p-2">
-                        <Col>
-                            <Card.Img variant="top" style={style.cardImage} src="/sample Image/Rectangle 15.png" />
-                        </Col>
-                        <Col>
-                            <Card.Img variant="top" style={style.cardImage} src="/sample Image/Rectangle 8.png" />
-                        </Col>
-                        <Col>
-                            <Card.Img variant="top" style={style.cardImage} src="/sample Image/Rectangle 10.png" />
-                        </Col>
-                        <Col>
-                            <Card.Img variant="top" style={style.cardImage} src="/sample Image/Rectangle 10.png" />
-                        </Col>
-
+                    <Row md="5" className="w-100 d-flex gap-3 justify-content-start mt-4 mb-5 p-2">
+                        {postProfile?.map((item, index) => {
+                            return (
+                                <Col key={index}>
+                                    <Card.Img src={item?.photos.photo} style={style.cardImage} />
+                                </Col>
+                            )
+                        })}
                     </Row>
                 </Row>
             </Container>

@@ -18,7 +18,7 @@ type User struct {
 
 type UserResponse struct {
 	ID    int    `json:"-"`
-	Email string `json:"Email"`
+	Email string `json:"email"`
 }
 
 func (UserResponse) TableName() string {

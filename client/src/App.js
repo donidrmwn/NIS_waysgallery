@@ -24,9 +24,7 @@ function App() {
   const checkUser = async () => {
     try {
       const response = await API.get("/check-auth");
-      console.log("check auth", response)
       let payload = response.data.data;
-      console.log(payload)
       payload.token = localStorage.token;
       dispatch({
         type: "USER_SUCCESS",
@@ -68,7 +66,7 @@ function App() {
             <Route path='/' element={<LandingPage />} />
             <Route element={<PrivateRouteLogin />}>
               <Route path='/home' element={<><HomePage /></>} />
-              <Route path='/detail-post' element={<><DetailPostPage /></>} />
+              <Route path='/detail-post/:id' element={<><DetailPostPage /></>} />
               <Route path='/profile/:user' element={<><ProfilePage /></>} />
               <Route path='/upload' element={<><AddPostPage /></>} />
               <Route path='/send-project' element={<><SendProjectPage /></>} />

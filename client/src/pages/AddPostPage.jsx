@@ -231,7 +231,9 @@ export default function AddPostPage() {
                         />
                         <Row className="d-flex justify-content-center gap-4 mt-5">
                             {isLoading ?
-                                <LoadingSpinner />
+                                <div className="m-auto">
+                                    <LoadingSpinner />
+                                </div>
                                 :
                                 <>
                                     <Button onClick={() => clearImageHolder()} className='fw-bold' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>Cancel</Button>

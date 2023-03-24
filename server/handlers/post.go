@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 	photodto "waysgallery/dto/photo"
 	postdto "waysgallery/dto/post"
@@ -111,5 +112,37 @@ func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
 		Data: posts,
+	})
+}
+func (h *handlerPost) FindUserPosts(c echo.Context) error {
+	userLogin := c.Get("userLogin")
+	userID := userLogin.(jwt.MapClaims)["id"].(float64)
+
+	posts, err := h.PostRepository.FindUserPosts(int(userID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: posts,
+	})
+}
+
+func (h *handlerPost) GetPost(c echo.Context) error {
+	id := c.Param("id")
+	post_id, _ := strconv.Atoi(id)
+	post, err := h.PostRepository.GetPost(post_id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: post,
 	})
 }
