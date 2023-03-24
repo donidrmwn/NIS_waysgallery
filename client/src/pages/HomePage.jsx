@@ -1,13 +1,18 @@
+import { useState } from 'react';
 import { Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
 import PhotoAlbum from "react-photo-album";
 import { useQuery } from 'react-query';
+import LoadingSpinner from '../components/LoadingSpinner';
 import photos from '../components/photos/photos';
 import { API } from '../config/api';
 import Gallery from '../utils/Gallery';
 export default function HomePage() {
-
+    const [isLoading, setIsLoading] = useState(false)
+    const [titleDropDown,setTitleDropDown] = useState("Today")
     let { data: posts } = useQuery("postsCache", async () => {
+        setIsLoading(true)
         const response = await API.get("/post/today");
+        setIsLoading(false)
         return response.data;
     })
     return (
@@ -23,10 +28,10 @@ export default function HomePage() {
             <Container>
                 <Row className='d-flex'>
                     <Col>
-                        <DropdownButton variant="flat" id="dropdown-basic-button" title="Today">
+                        <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
                             <Dropdown.Item href="#/action-1">Today</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                            <Dropdown.Item href="#/action-2">Following</Dropdown.Item>
+                            {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
                         </DropdownButton>
                     </Col>
                     <Col className='d-flex justify-content-end'>
@@ -49,8 +54,14 @@ export default function HomePage() {
                     </Col>
                 </Row>
                 <h3 className='my-5'>today's post</h3>
-                
-                <Gallery  data={posts} />
+                {isLoading ?
+                    <div className='m-auto d-flex justify-content-center align-items-center'>
+                        <LoadingSpinner />
+                    </div>
+                    :
+                    <Gallery data={posts} />
+                }
+
             </Container>
         </>
     )
