@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
+import { Button, Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
 import PhotoAlbum from "react-photo-album";
 import { useQuery } from 'react-query';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -32,10 +32,10 @@ export default function HomePage() {
     }
 
     useEffect(() => {
-        setIsLoading(true)
-        console.log(endPoint)
+        // setIsLoading(true)
+        
         refetch()
-
+       
     }, [endPoint, titleDropDown])
 
 
@@ -47,7 +47,7 @@ export default function HomePage() {
         } else if (titleDropDown == "Followed") {
             setEndPoint("/post/followed?limit=" + showLimit)
         }
-
+        
     }, [showLimit, titleDropDown])
 
     return (
@@ -66,7 +66,7 @@ export default function HomePage() {
                         <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
                             <Dropdown.Item onClick={handleShowToday}>Today</Dropdown.Item>
                             <Dropdown.Item onClick={handleShowAll}>Show All</Dropdown.Item>
-                            <Dropdown.Item onClick={handleFollowed}>Following</Dropdown.Item>
+                            <Dropdown.Item onClick={handleFollowed}>Followed</Dropdown.Item>
                             {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
                         </DropdownButton>
                     </Col>
@@ -107,7 +107,12 @@ export default function HomePage() {
                     <>
                         <Gallery data={posts} />
                         <div className='m-auto d-flex justify-content-center align-items-end'>
-                            <p onClick={() => setShowLimit(showLimit + 10)} className='mt-5' style={{ cursor: "pointer" }}>show more...</p>
+                            <Button
+                                style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
+                                onClick={() => setShowLimit(showLimit + 10)}
+                                className='my-5 fs-3 px-5 fw-bold'>
+                                Show More
+                            </Button>
                         </div>
                     </>
                 }

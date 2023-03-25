@@ -1,10 +1,12 @@
 
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { API } from '../config/api';
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+import Gallery from "../utils/Gallery";
 
 
 export default function ProfilePage() {
@@ -23,7 +25,8 @@ export default function ProfilePage() {
             heigth: "120px",
         },
         cardImage: {
-            height: "328px"
+            height: "328px",
+            cursor: "pointer"
         }
     }
     const [state] = useContext(UserContext)
@@ -31,26 +34,69 @@ export default function ProfilePage() {
     let { id } = useParams();
     let endPoint = "/profile/user/" + id
 
-
+    const [isLoading, setIsLoading] = useState(false)
 
 
     let { data: profile, refetch: refetchProfile } = useQuery("profile", async () => {
         const response = await API.get(endPoint);
         return response.data.data;
     })
-    
 
-    let { data: postProfile, refetch: refetchPostProfile } = useQuery("postProfileCache", async () => {
-        const response = await API.get("/post/user/"+profile?.user_id);
+    let { data: follow, refetch: refetchFollow } = useQuery("followCache", async () => {
+        let response
+        if (localStorage.token) {
+            response = await API.get("/follow/" + id);
+        }
+        setIsLoading(false)
         return response.data.data;
     })
 
-    useEffect(() => {
-        refetchProfile() 
-        refetchPostProfile()
-        console.log("post profile",postProfile)
-    }, [])
 
+
+    let { data: postProfile, refetch: refetchPostProfile } = useQuery("postProfileCache", async () => {
+        const response = await API.get("/post/user/" + id);
+        console.log(response)
+        return response.data;
+    })
+
+    useEffect(() => {
+        refetchProfile()
+        refetchPostProfile()
+        console.log("post profile", postProfile)
+    }, [id])
+
+
+    const handleFollow = useMutation(async (e) => {
+        try {
+            e.preventDefault();
+            setIsLoading(true)
+            const response = await API.post(
+                '/follow/' + id
+            )
+            refetchFollow()
+            setIsLoading(false)
+            console.log(response)
+        } catch (error) {
+            setIsLoading(false)
+            console.log(error)
+        }
+    })
+
+    const handleUnFollow = useMutation(async (e) => {
+        try {
+            e.preventDefault();
+            setIsLoading(true)
+            const response = await API.delete(
+                '/follow/' + id
+            )
+            refetchFollow()
+            setIsLoading(false)
+            console.log(response)
+        } catch (error) {
+            setIsLoading(false)
+            console.log(error)
+        }
+    })
     return (
         <>
 
@@ -63,12 +109,25 @@ export default function ProfilePage() {
                         <h1 className="fw-bold">{profile?.greeting}</h1>
                         {id == state.user.id ?
                             <>
-                                <Button onClick={() => navigate("/edit-profile/"+state.user.id)} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
+                                <Button onClick={() => navigate("/edit-profile/" + state.user.id)} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Edit Profile</Button>
                             </>
                             :
                             <div className="d-flex gap-3">
-                                <Button className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>Follow</Button>
-                                <Button className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
+                                {!follow?.followed_user.email ?
+                                    <Button onClick={(e) => { handleFollow.mutate(e) }} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>
+                                        {isLoading ? <div className="m-auto w-75"> <LoadingSpinner /></div> :
+                                            <p className="m-auto">Follow</p>
+                                        }
+
+                                    </Button>
+                                    :
+                                    <Button onClick={(e) => { handleUnFollow.mutate(e) }} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#E7E7E7", border: "none", color: "black" }}>
+                                        {isLoading ? <div className="m-auto w-75"> <LoadingSpinner /></div> :
+                                            <p className="m-auto">Unfollow</p>
+                                        }
+                                    </Button>
+                                }
+                                <Button onClick={() => navigate("/hired/"+id)} className='fw-bold mt-5' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
                             </div>
                         }
 
@@ -79,7 +138,7 @@ export default function ProfilePage() {
                         <Image className="w-100 rounded" style={{ height: "484px", zIndex: 1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
                     </Col>
                 </Row>
-                <Row>
+                <Row className="mb-5">
                     <p className="fw-bold">
                         {id == state.user.id ?
                             <>
@@ -87,20 +146,12 @@ export default function ProfilePage() {
                             </>
                             :
                             <>
-                                {profile?.name} Works 
+                                {profile?.name} Works
                             </>
                         }
                     </p>
-                    <Row md="5" className="w-100 d-flex gap-3 justify-content-start mt-4 mb-5 p-2">
-                        {}
-                        {postProfile?.map((item, index) => {
-                            return (
-                                <Col key={index}>
-                                    <Card.Img src={item?.photos[0].photo} style={style.cardImage} />
-                                </Col>
-                            )
-                        })}
-                    </Row>
+                    <Gallery data={postProfile} />
+
                 </Row>
             </Container>
         </>

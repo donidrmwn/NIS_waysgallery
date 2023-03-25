@@ -68,7 +68,7 @@ function App() {
 
     <>
       {isLoading ? null :
-        <Container style={{ backgroundColor: "#F9F9F9" }} fluid="true" className='px-5 vh-100'>
+        <Container style={{ backgroundColor: "#F9F9F9" }} fluid="true" className='px-5 h-100'>
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route element={<><PrivateRouteLogin /></>}>
@@ -79,7 +79,7 @@ function App() {
               <Route path='/upload' element={<><AddPostPage /></>} />
               <Route path='/send-project' element={<><SendProjectPage /></>} />
               <Route path='/edit-profile/:id' element={<><EditProfilePage /></>} />
-              <Route path='/hired' element={<><HiredPage /></>} />
+              <Route path='/hired/:id' element={<><HiredPage /></>} />
               <Route path='/order' element={<><OrderPage /></>} />
             </Route>
           </Routes>

@@ -55,7 +55,7 @@ export default function EditProfilePage() {
     const [isLoadingBestArt, setIsLoadingBestArt] = useState(false)
 
     async function getDataUpdate() {
-        const responseProfile = await API.get('/profile/user/'+state.user.id)
+        const responseProfile = await API.get('/profile/user/' + state.user.id)
         setPreviewBestArt(`${responseProfile.data.data.best_art}`)
         setPreviewProfilePicture(`${responseProfile.data.data.profile_picture}`)
         setForm({
@@ -158,7 +158,7 @@ export default function EditProfilePage() {
 
 
     let { refetch } = useQuery("profileCache", async () => {
-        const response = await API.get("/profile/user/"+state.user.id);
+        const response = await API.get("/profile/user/" + state.user.id);
         return response.data.data;
     })
 

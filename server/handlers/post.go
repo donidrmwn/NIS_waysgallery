@@ -223,10 +223,11 @@ func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	})
 }
 func (h *handlerPost) FindUserPosts(c echo.Context) error {
-	userLogin := c.Get("userLogin")
-	userID := userLogin.(jwt.MapClaims)["id"].(float64)
-
-	posts, err := h.PostRepository.FindUserPosts(int(userID))
+	// userLogin := c.Get("userLogin")
+	// userID := userLogin.(jwt.MapClaims)["id"].(float64)
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	posts, err := h.PostRepository.FindUserPosts(ID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,

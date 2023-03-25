@@ -39,6 +39,11 @@ export default function DropdownUser({state}) {
         const response = await API.get("/profile/user/" + state.user.id);
         return response.data.data;
     })
+    // let { refetch: refetchProfile } = useQuery("profile", async () => {
+    //     const response = await API.get("/profile/user/" + state.user.id);
+    //     return response.data.data;
+    // })
+
 
     return (
         <>
@@ -47,7 +52,7 @@ export default function DropdownUser({state}) {
                     <Image style={style.roundedImage} className="m-auto me-4" src={`${profile?.profile_picture}`} />
                 }
                 id="basic-nav-dropdown">
-                <NavDropdown.Item as={Button} onClick={() => navigate("/profile/" + state.user.id)} className="py-2 me-5 fw-bold">
+                <NavDropdown.Item as={Button} onClick={() => {navigate("/profile/" + state.user.id);}} className="py-2 me-5 fw-bold">
                     <Image style={style.dropDownIcon} src="/user 1.png" className="m-auto me-3" />
                     Profile
                 </NavDropdown.Item>
