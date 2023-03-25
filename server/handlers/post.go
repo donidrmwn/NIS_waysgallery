@@ -170,6 +170,22 @@ func (h *handlerPost) CreatePost(c echo.Context) error {
 	})
 }
 
+func (h *handlerPost) FindAllPosts(c echo.Context) error {
+	limit := c.QueryParam("limit")
+	Limit, _ := strconv.Atoi(limit)
+	posts, err := h.PostRepository.FindAllPosts(Limit)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: posts,
+	})
+}
+
 func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	now := time.Now()
 

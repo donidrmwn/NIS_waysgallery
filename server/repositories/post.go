@@ -11,6 +11,7 @@ type PostRepository interface {
 	CreatePost(post models.Post) (models.Post, error)
 	UpdatePost(post models.Post) (models.Post, error)
 	DeletePost(post models.Post, ID int) (models.Post, error)
+	FindAllPosts(limit int) ([]models.Post, error)
 	FindTodayPosts(todayDate time.Time) ([]models.Post, error)
 	FindUserPosts(userID int) ([]models.Post, error)
 	GetPost(postID int) (models.Post, error)
@@ -43,10 +44,15 @@ func (r *repository) GetLatestPostIDByUserID(userID int) (models.Post, error) {
 }
 func (r *repository) FindTodayPosts(todayDate time.Time) ([]models.Post, error) {
 	var posts []models.Post
-	err := r.db.Select("id,title,description").Limit(10).Order("created_at desc").Where("cast( created_at AS DATE) = cast( ? AS DATE) ", todayDate).Preload("Photo", "line_no = 0").Find(&posts).Error
+	err := r.db.Select("id,title,description").Order("created_at desc").Where("cast( created_at AS DATE) = cast( ? AS DATE) ", todayDate).Preload("Photo", "line_no = 0").Find(&posts).Error
 	return posts, err
 }
 
+func (r *repository) FindAllPosts(limit int) ([]models.Post, error) {
+	var posts []models.Post
+	err := r.db.Order("created_at desc").Limit(limit).Preload("Photo", "line_no = 0").Find(&posts).Error
+	return posts, err
+}
 func (r *repository) FindUserPosts(userID int) ([]models.Post, error) {
 	var posts []models.Post
 	err := r.db.Order("created_at desc").Where("user_id = ?", userID).Preload("Photo", "line_no = 0").Find(&posts).Error
