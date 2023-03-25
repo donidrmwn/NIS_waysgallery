@@ -186,6 +186,25 @@ func (h *handlerPost) FindAllPosts(c echo.Context) error {
 	})
 }
 
+func (h *handlerPost) FindUserPostsFollowed(c echo.Context) error {
+	limit := c.QueryParam("limit")
+	Limit, _ := strconv.Atoi(limit)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+	posts, err := h.PostRepository.FindUserPostsFollowed(int(UserID), Limit)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: posts,
+	})
+}
+
 func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	now := time.Now()
 	limit := c.QueryParam("limit")

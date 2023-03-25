@@ -20,8 +20,6 @@ export default function DetailPostPage() {
         return response.data.data;
     })
 
-   
-   
     return (
         <>
             {isLoading ?
