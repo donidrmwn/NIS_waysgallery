@@ -13,9 +13,10 @@ type Photo struct {
 }
 
 type PhotoResponse struct {
+	ID     int    `json:"photo_id" gorm:"type: integer"`
 	LineNo int    `json:"line_no" gorm:"type: integer"`
 	Photo  string `json:"photo" gorm:"type: varchar(255)"`
-	PostID int    `json:"-"`
+	PostID int    `json:"post_id"`
 }
 
 func (PhotoResponse) TableName() string {

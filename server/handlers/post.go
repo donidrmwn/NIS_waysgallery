@@ -35,18 +35,13 @@ func HandlerPost(
 }
 
 func (h *handlerPost) UpdatePost(c echo.Context) error {
-	var ctx = context.Background()
-	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
-	var API_KEY = os.Getenv("API_KEY")
-	var API_SECRET = os.Getenv("API_SECRET")
-	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
 	id := c.Param("id")
 	ID, _ := strconv.Atoi(id)
 	userLogin := c.Get("userLogin")
 	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
 
-	post, err := h.PostRepository.GetPostAuth(int(UserID), ID)
+	post, err := h.PostRepository.GetPostAuth(ID, int(UserID))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
@@ -75,10 +70,15 @@ func (h *handlerPost) UpdatePost(c echo.Context) error {
 		})
 	}
 
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
-		photo, _ := h.PhotoRepository.GetPhoto(idx, postData.ID)
+		photo, _ := h.PhotoRepository.GetPhoto(idx, ID)
 		if data == "main_image" && image == "" {
 			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 				Code:    http.StatusBadRequest,

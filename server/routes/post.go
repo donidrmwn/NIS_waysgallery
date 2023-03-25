@@ -24,10 +24,10 @@ func PostRoutes(e *echo.Group) {
 					middleware.UploadFile(
 						h.CreatePost, "image_4"), "image_3"), "image_2"), "main_image")))
 
-	e.PATCH("/post/user", middleware.Auth(
+	e.PATCH("/post/user/:id", middleware.Auth(
 		middleware.UploadFile(
 			middleware.UploadFile(
 				middleware.UploadFile(
 					middleware.UploadFile(
-						h.CreatePost, "image_4"), "image_3"), "image_2"), "main_image")))
+						h.UpdatePost, "image_4"), "image_3"), "image_2"), "main_image")))
 }
