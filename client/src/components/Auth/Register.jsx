@@ -30,6 +30,7 @@ export default function Register({ switchRegister }) {
             );
             console.log(response)
             setMessage(alert)
+            switchRegister()
         } catch (error) {
             const alert = (
                 <Alert variant="danger" className="py-1">
@@ -70,7 +71,7 @@ export default function Register({ switchRegister }) {
                 <Button onClick={(e) => handleSubmit.mutate(e)} className="py-2" style={{ fontSize: "20px", backgroundColor: "#2FC4B2", border: "none" }}>Register</Button>
             </Form>
             <p style={{ textAlign: "center", fontSize: "20px" }}>Already have an account ?
-                Click <span onClick={switchRegister} as={Button} className="fw-bold">Here</span>
+                Click <span  style={{cursor:"pointer"}} onClick={switchRegister} as={Button} className="fw-bold">Here</span>
             </p>
         </Container>
     )

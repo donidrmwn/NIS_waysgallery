@@ -12,6 +12,7 @@ func RunMigration() {
 		&models.Profile{},
 		&models.Photo{},
 		&models.Post{},
+		&models.Follow{},
 	)
 
 	if err != nil {

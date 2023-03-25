@@ -14,7 +14,7 @@ export default function ProfilePage() {
             width: "330px",
             height: "400px",
             right: "0",
-            top: "121px",
+            top: "145px",
             backgroundColor: "#2FC4B2",
 
         }, roundedImage: {
@@ -76,7 +76,7 @@ export default function ProfilePage() {
                     <Col md="5" className="d-flex justify-content-end">
 
 
-                        <Image className="w-100" style={{ height: "484px", zIndex: 1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
+                        <Image className="w-100 rounded" style={{ height: "484px", zIndex: 1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
                     </Col>
                 </Row>
                 <Row>

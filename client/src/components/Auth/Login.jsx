@@ -32,7 +32,7 @@ export default function Login({ switchLogin, onHide }) {
                 payload: response.data.data,
             });
 
-            setAuthToken(localStorage.token)
+            setAuthToken(response.data.data.token)
             const alert = (
                 <Alert variant="success" className='py-1'>
                     Login Success
@@ -76,7 +76,7 @@ export default function Login({ switchLogin, onHide }) {
                 <Button onClick={(e) => handleSubmit.mutate(e)} className="py-2" style={{ fontSize: "20px", backgroundColor: "#2FC4B2", border: "none" }}>Login</Button>
             </Form>
             <p style={{ textAlign: "center", fontSize: "20px" }}>Don't have an account ?
-                Click <span onClick={switchLogin} as={Button} className="fw-bold">Here</span>
+                Click <span style={{cursor:"pointer"}} onClick={switchLogin} as={Button} className="fw-bold">Here</span>
             </p>
         </Container>
     )

@@ -24,22 +24,26 @@ function App() {
 
   const checkUser = async () => {
     try {
-     
-      const response = await API.get("/check-auth");
+      const response = await API.get('/check-auth');
+      console.log("check user success : ", response)
+      // Get user data
       let payload = response.data.data;
+      // Get token from local storage
       payload.token = localStorage.token;
+      // Send data to useContext
       dispatch({
-        type: "USER_SUCCESS",
+        type: 'USER_SUCCESS',
         payload,
       });
       setIsLoading(false)
     } catch (error) {
+      console.log("check user failed : ", error);
       dispatch({
-        type: "AUTH_ERROR",
+        type: 'AUTH_ERROR',
       });
       setIsLoading(false)
     }
-  }
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -54,6 +58,7 @@ function App() {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
       checkUser();
+
     } else {
       setIsLoading(false)
     }
