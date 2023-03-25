@@ -63,7 +63,7 @@ func (r *repository) FindUserPosts(userID int) ([]models.Post, error) {
 
 func (r *repository) FindUserPostsFollowed(userID int, limit int) ([]models.Post, error) {
 	var posts []models.Post
-	followedId := r.db.Select("followed_id").Where("follower_id = ?", userID).Table("follows")
+	followedId := r.db.Select("followed_id").Where("follower_id = ? AND deleted_at IS NULL", userID).Table("follows")
 
 	err := r.db.Order("created_at desc").Limit(limit).Where("user_id in (?)", followedId).Preload("Photo", "line_no = 0").Find(&posts).Error
 	return posts, err

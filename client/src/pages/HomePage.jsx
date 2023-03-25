@@ -12,7 +12,7 @@ export default function HomePage() {
     const [endPoint, setEndPoint] = useState("/post/today?limit=" + 10)
     const [showLimit, setShowLimit] = useState(10)
     let { data: posts, refetch } = useQuery("postsCache", async () => {
-   
+
         const response = await API.get(endPoint);
         setIsLoading(false)
         return response.data;
@@ -26,23 +26,29 @@ export default function HomePage() {
         setTitleDropDown("Show All")
         setEndPoint("/post/all?limit=" + 10)
     }
+    const handleFollowed = () => {
+        setTitleDropDown("Followed")
+        setEndPoint("/post/followed?limit=" + 10)
+    }
 
     useEffect(() => {
         setIsLoading(true)
-       console.log(endPoint)
+        console.log(endPoint)
         refetch()
-       
-    }, [endPoint,titleDropDown])
 
-    
+    }, [endPoint, titleDropDown])
+
+
     useEffect(() => {
         if (titleDropDown == "Show All") {
             setEndPoint("/post/all?limit=" + showLimit)
-        }else if(titleDropDown =="Today"){
+        } else if (titleDropDown == "Today") {
             setEndPoint("/post/today?limit=" + showLimit)
+        } else if (titleDropDown == "Followed") {
+            setEndPoint("/post/followed?limit=" + showLimit)
         }
 
-    }, [showLimit,titleDropDown])
+    }, [showLimit, titleDropDown])
 
     return (
         <>
@@ -60,7 +66,7 @@ export default function HomePage() {
                         <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
                             <Dropdown.Item onClick={handleShowToday}>Today</Dropdown.Item>
                             <Dropdown.Item onClick={handleShowAll}>Show All</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setTitleDropDown("Following")}>Following</Dropdown.Item>
+                            <Dropdown.Item onClick={handleFollowed}>Following</Dropdown.Item>
                             {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
                         </DropdownButton>
                     </Col>
