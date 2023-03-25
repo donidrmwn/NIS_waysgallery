@@ -10,9 +10,8 @@ import { API } from "../config/api";
 
 export default function DetailPostPage() {
     let { id } = useParams();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     let { data: postDetail } = useQuery("postDetailCache", async () => {
-        setIsLoading(true)
         const response = await API.get("/post/" + id);
         setIsLoading(false)
         return response.data.data;
@@ -26,7 +25,7 @@ export default function DetailPostPage() {
                     <LoadingSpinner />
                 </div> :
                 <Container className="d-grid w-50 px-5 justify-content-center m-auto">
-                    <DetailPostHeader user={postDetail?.user} title={postDetail?.title} />
+                    <DetailPostHeader user={postDetail?.user} postID={postDetail.id} title={postDetail?.title} />
                     <DetailPostContent photos={postDetail?.photos} />
                     <DetailPostFooter email={postDetail?.user?.email} description={postDetail?.description} />
                 </Container>

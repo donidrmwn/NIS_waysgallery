@@ -14,6 +14,7 @@ import OrderPage from './pages/OrderPage'
 import { API, setAuthToken } from './config/api';
 import { UserContext } from './context/userContext';
 import { PrivateRouteLogin } from './components/privateRoute';
+import EditPostPage from './pages/EditPostPage';
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
             <Route element={<><PrivateRouteLogin /></>}>
               <Route path='/home' element={<><HomePage /></>} />
               <Route path='/detail-post/:id' element={<><DetailPostPage /></>} />
+              <Route path='/edit-post/:id' element={<><EditPostPage /></>} />
               <Route path='/profile/:id' element={<><ProfilePage /></>} />
               <Route path='/upload' element={<><AddPostPage /></>} />
               <Route path='/send-project' element={<><SendProjectPage /></>} />

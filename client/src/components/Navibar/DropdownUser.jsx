@@ -22,7 +22,7 @@ export default function DropdownUser({state}) {
     const navigate = useNavigate();
     const [_, dispatch] = useContext(UserContext)
 
-    console.log("Ini state navibar", state)
+   
     const logout = () => {
         dispatch({
             type: "LOGOUT"

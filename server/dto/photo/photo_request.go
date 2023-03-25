@@ -7,6 +7,5 @@ type CreatePhotoRequest struct {
 }
 
 type UpdatePhotoRequest struct {
-	LineNo int    `json:"line_no" gorm:"type: integer"`
-	Photo  string `json:"photo" gorm:"type: varchar(255)"`
+	Photo string `json:"photo" gorm:"type: varchar(255)"`
 }

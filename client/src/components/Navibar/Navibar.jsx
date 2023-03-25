@@ -4,9 +4,6 @@ import Brand from "../Brand/Brand";
 import BrandImage from "../Brand/BrandImage";
 import DropdownUser from "./DropdownUser";
 
-import { useEffect } from "react";
-import { useState } from "react";
-
 export default function Navibar({state}) {
     const navigate = useNavigate();
 

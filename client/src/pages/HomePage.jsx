@@ -8,7 +8,7 @@ import { API } from '../config/api';
 import Gallery from '../utils/Gallery';
 export default function HomePage() {
     const [isLoading, setIsLoading] = useState(false)
-    const [titleDropDown,setTitleDropDown] = useState("Today")
+    const [titleDropDown, setTitleDropDown] = useState("Today")
     let { data: posts } = useQuery("postsCache", async () => {
         setIsLoading(true)
         const response = await API.get("/post/today");
@@ -29,8 +29,9 @@ export default function HomePage() {
                 <Row className='d-flex'>
                     <Col>
                         <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
-                            <Dropdown.Item href="#/action-1">Today</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Following</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setTitleDropDown("Today")}>Today</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setTitleDropDown("Following")}>Following</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setTitleDropDown("Show All")}>Show All</Dropdown.Item>
                             {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
                         </DropdownButton>
                     </Col>
@@ -59,7 +60,12 @@ export default function HomePage() {
                         <LoadingSpinner />
                     </div>
                     :
-                    <Gallery data={posts} />
+                    <>
+                        <Gallery data={posts} />
+                        <div className='m-auto d-flex justify-content-center align-items-end'>
+                            {titleDropDown == "Show All" ? <p style={{cursor:"pointer"}}>show more...</p> : null}
+                        </div>
+                    </>
                 }
 
             </Container>

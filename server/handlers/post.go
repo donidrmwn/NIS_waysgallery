@@ -34,6 +34,80 @@ func HandlerPost(
 	}
 }
 
+func (h *handlerPost) UpdatePost(c echo.Context) error {
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+
+	post, err := h.PostRepository.GetPostAuth(int(UserID), ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	request := postdto.UpdatePostRequest{
+		Title:       c.FormValue("title"),
+		Description: c.FormValue("description"),
+	}
+
+	if request.Title != "" {
+		post.Title = request.Title
+	}
+
+	if request.Description != "" {
+		post.Description = request.Description
+	}
+
+	postData, err := h.PostRepository.UpdatePost(post)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+	}
+
+	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
+	for idx, data := range arrImage {
+		image := c.Get(data).(string)
+		photo, _ := h.PhotoRepository.GetPhoto(idx, postData.ID)
+		if data == "main_image" && image == "" {
+			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+				Code:    http.StatusBadRequest,
+				Message: "Main image must be included",
+			})
+		}
+		var urlCloudinary string = ""
+		if image != "" {
+			resp, _ := cld.Upload.Upload(ctx, image, uploader.UploadParams{Folder: "waysgallery"})
+			urlCloudinary = resp.SecureURL
+		}
+
+		photoRequest := photodto.UpdatePhotoRequest{
+			Photo: urlCloudinary,
+		}
+
+		if photoRequest.Photo != "" {
+			photo.Photo = photoRequest.Photo
+		}
+
+		h.PhotoRepository.UpdatePhoto(photo)
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: postData,
+	})
+}
+
 func (h *handlerPost) CreatePost(c echo.Context) error {
 	var ctx = context.Background()
 	var CLOUD_NAME = os.Getenv("CLOUD_NAME")

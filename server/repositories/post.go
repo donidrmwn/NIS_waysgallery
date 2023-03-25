@@ -14,6 +14,7 @@ type PostRepository interface {
 	FindTodayPosts(todayDate time.Time) ([]models.Post, error)
 	FindUserPosts(userID int) ([]models.Post, error)
 	GetPost(postID int) (models.Post, error)
+	GetPostAuth(postID int, userID int) (models.Post, error)
 }
 
 func RepositoryPost(db *gorm.DB) *repository {
@@ -55,5 +56,11 @@ func (r *repository) FindUserPosts(userID int) ([]models.Post, error) {
 func (r *repository) GetPost(postID int) (models.Post, error) {
 	var post models.Post
 	err := r.db.Preload("Photo").Preload("User.Profile").First(&post, postID).Error
+	return post, err
+}
+
+func (r *repository) GetPostAuth(postID int, userID int) (models.Post, error) {
+	var post models.Post
+	err := r.db.Preload("Photo").Preload("User.Profile").First(&post, "id = ? and user_id = ?", postID, userID).Error
 	return post, err
 }
