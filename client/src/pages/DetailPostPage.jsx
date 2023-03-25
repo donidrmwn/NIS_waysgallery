@@ -25,9 +25,9 @@ export default function DetailPostPage() {
                     <LoadingSpinner />
                 </div> :
                 <Container className="d-grid w-50 px-5 justify-content-center m-auto">
-                    <DetailPostHeader user={postDetail?.user} postID={postDetail.id} title={postDetail?.title} />
+                    <DetailPostHeader user={postDetail?.user} postID={postDetail.id} title={postDetail?.title} postDate={postDetail.created_at}/>
                     <DetailPostContent photos={postDetail?.photos} />
-                    <DetailPostFooter email={postDetail?.user?.email} description={postDetail?.description} />
+                    <DetailPostFooter userId={postDetail?.user.id} email={postDetail?.user?.email} description={postDetail?.description} />
                 </Container>
             }
         </>

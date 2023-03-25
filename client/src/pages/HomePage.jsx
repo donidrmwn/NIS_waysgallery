@@ -9,10 +9,10 @@ import Gallery from '../utils/Gallery';
 export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true)
     const [titleDropDown, setTitleDropDown] = useState("Today")
-    const [endPoint, setEndPoint] = useState("/post/today")
+    const [endPoint, setEndPoint] = useState("/post/today?limit=" + 10)
     const [showLimit, setShowLimit] = useState(10)
     let { data: posts, refetch } = useQuery("postsCache", async () => {
-
+   
         const response = await API.get(endPoint);
         setIsLoading(false)
         return response.data;
@@ -20,7 +20,7 @@ export default function HomePage() {
 
     const handleShowToday = () => {
         setTitleDropDown("Today")
-        setEndPoint("/post/today")
+        setEndPoint("/post/today?limit=" + 10)
     }
     const handleShowAll = () => {
         setTitleDropDown("Show All")
@@ -29,15 +29,20 @@ export default function HomePage() {
 
     useEffect(() => {
         setIsLoading(true)
+       console.log(endPoint)
         refetch()
-        setIsLoading(false)
-    }, [endPoint])
+       
+    }, [endPoint,titleDropDown])
 
+    
     useEffect(() => {
+        if (titleDropDown == "Show All") {
+            setEndPoint("/post/all?limit=" + showLimit)
+        }else if(titleDropDown =="Today"){
+            setEndPoint("/post/today?limit=" + showLimit)
+        }
 
-        setEndPoint("/post/all?limit=" + showLimit)
-
-    }, [showLimit])
+    }, [showLimit,titleDropDown])
 
     return (
         <>

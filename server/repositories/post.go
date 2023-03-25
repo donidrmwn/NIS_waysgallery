@@ -12,7 +12,7 @@ type PostRepository interface {
 	UpdatePost(post models.Post) (models.Post, error)
 	DeletePost(post models.Post, ID int) (models.Post, error)
 	FindAllPosts(limit int) ([]models.Post, error)
-	FindTodayPosts(todayDate time.Time) ([]models.Post, error)
+	FindTodayPosts(todayDate time.Time, limit int) ([]models.Post, error)
 	FindUserPosts(userID int) ([]models.Post, error)
 	GetPost(postID int) (models.Post, error)
 	GetPostAuth(postID int, userID int) (models.Post, error)
@@ -42,9 +42,9 @@ func (r *repository) GetLatestPostIDByUserID(userID int) (models.Post, error) {
 	err := r.db.Raw("SELECT MAX(id) FROM posts WHERE user_id = ?", userID).Scan(&post).Error
 	return post, err
 }
-func (r *repository) FindTodayPosts(todayDate time.Time) ([]models.Post, error) {
+func (r *repository) FindTodayPosts(todayDate time.Time, limit int) ([]models.Post, error) {
 	var posts []models.Post
-	err := r.db.Select("id,title,description").Order("created_at desc").Where("cast( created_at AS DATE) = cast( ? AS DATE) ", todayDate).Preload("Photo", "line_no = 0").Find(&posts).Error
+	err := r.db.Select("id,title,description").Order("created_at desc").Limit(limit).Where("cast( created_at AS DATE) = cast( ? AS DATE) ", todayDate).Preload("Photo", "line_no = 0").Find(&posts).Error
 	return posts, err
 }
 

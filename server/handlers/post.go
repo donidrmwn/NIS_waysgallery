@@ -188,9 +188,10 @@ func (h *handlerPost) FindAllPosts(c echo.Context) error {
 
 func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	now := time.Now()
-
+	limit := c.QueryParam("limit")
+	Limit, _ := strconv.Atoi(limit)
 	fmt.Println(now.Round(0))
-	posts, err := h.PostRepository.FindTodayPosts(now.Round(0))
+	posts, err := h.PostRepository.FindTodayPosts(now.Round(0), Limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
