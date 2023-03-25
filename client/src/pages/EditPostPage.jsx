@@ -99,13 +99,13 @@ export default function EditPostPage() {
             formData.set('image_4', !image4 ? "" : image4)
             formData.set('title', form.title);
             formData.set('description', form.description);
-
-            const response = await API.post(
-                '/post/user', formData, config
+            
+            const response = await API.patch(
+                '/post/user/'+id, formData, config
             );
             setIsLoading(false)
             clearImageHolder()
-            console.log(response)
+          
         } catch (error) {
             console.log(error)
             setIsLoading(false)
@@ -119,13 +119,17 @@ export default function EditPostPage() {
 
     function clearImageHolder() {
         setPreviewMainImage(null)
+        setMainImage(null)
         setPreviewImage2(null)
+        setImage2(null)
         setPreviewImage3(null)
+        setImage3(null)
         setPreviewImage4(null)
+        setImage4(null)
     }
 
     function setImageData(acceptedFiles) {
-        clearImageHolder()
+        // clearImageHolder()
         acceptedFiles.forEach((file, index) => {
             switch (index) {
                 case 0:
@@ -145,6 +149,7 @@ export default function EditPostPage() {
                     setImage4(file)
                     break;
                 default:
+                    clearImageHolder()
                     break;
             }
         });

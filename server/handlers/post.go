@@ -95,9 +95,7 @@ func (h *handlerPost) UpdatePost(c echo.Context) error {
 			Photo: urlCloudinary,
 		}
 
-		if photoRequest.Photo != "" {
-			photo.Photo = photoRequest.Photo
-		}
+		photo.Photo = photoRequest.Photo
 
 		h.PhotoRepository.UpdatePhoto(photo)
 	}
