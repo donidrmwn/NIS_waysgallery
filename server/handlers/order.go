@@ -106,3 +106,83 @@ func (h *handlerOrder) FindOffer(c echo.Context) error {
 		Data: offers,
 	})
 }
+
+func (h *handlerOrder) UpdateOfferStatus(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+	request := new(orderdto.UpdateOrderRequest)
+	if err := c.Bind(request); err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	order, err := h.OrderRepository.GetOffer(ID, int(UserID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	if request.Status != "" {
+		order.Status = request.Status
+	}
+
+	data, err := h.OrderRepository.UpdateOrder(order)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: data,
+	})
+
+}
+
+func (h *handlerOrder) UpdateOrderStatus(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+	request := new(orderdto.UpdateOrderRequest)
+	if err := c.Bind(request); err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	order, err := h.OrderRepository.GetOrder(ID, int(UserID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	if request.Status != "" {
+		order.Status = request.Status
+	}
+
+	data, err := h.OrderRepository.UpdateOrder(order)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: data,
+	})
+
+}
