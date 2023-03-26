@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"waysgallery/database"
 	"waysgallery/pkg/postgres"
 	"waysgallery/routes"
@@ -18,7 +19,7 @@ func main() {
 	}
 
 	e := echo.New()
-	// var port = os.Getenv("PORT")
+	var port = os.Getenv("PORT")
 	postgres.DatabaseInit()
 	database.RunMigration()
 
@@ -32,5 +33,5 @@ func main() {
 	e.Static("/uploads", "./uploads")
 
 	fmt.Println("server running localhost:5000")
-	e.Logger.Fatal(e.Start(":"))
+	e.Logger.Fatal(e.Start(":" + port))
 }
