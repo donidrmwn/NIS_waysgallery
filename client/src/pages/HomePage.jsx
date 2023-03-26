@@ -13,6 +13,7 @@ export default function HomePage() {
     const [titleDropDown, setTitleDropDown] = useState("Today")
     const [endPoint, setEndPoint] = useState("/post/today?limit=" + 10)
     const [showLimit, setShowLimit] = useState(10)
+    const [searchPostName, setSearchPostName] = useState(null)
     let { data: posts, refetch } = useQuery("postsCache", async () => {
 
         const response = await API.get(endPoint);
@@ -33,7 +34,7 @@ export default function HomePage() {
         setEndPoint("/post/followed?limit=" + 10)
     }
 
-    useEffect(() => { 
+    useEffect(() => {
         refetch()
     }, [endPoint, titleDropDown])
 
@@ -49,6 +50,15 @@ export default function HomePage() {
 
     }, [showLimit])
 
+    useEffect(() => {
+        if (searchPostName != "") {
+            console.log(searchPostName)
+            setEndPoint("/post/search?post_name="+searchPostName)
+        } else {
+            setEndPoint("/post/today?limit=" + 10)
+        }
+
+    }, [searchPostName])
     return (
         <>
             <style type="text/css">
@@ -80,6 +90,8 @@ export default function HomePage() {
                                         border: "none",
                                         backgroundColor: "#E7E7E7"
                                     }}
+                                    name="product_name"
+                                    onChange={(e) => {setSearchPostName(e.target.value)}}
                                     type='text'
                                     placeholder='Search'
                                 />
@@ -105,7 +117,7 @@ export default function HomePage() {
                         {posts.data.length <= 0 ?
                             <>
                                 {console.log(posts)}
-                                <p>There's nothing to show. Click <span onClick={()=> navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                                <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
                             </>
                             :
                             <>
