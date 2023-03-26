@@ -60,6 +60,8 @@ export default function OrderPage() {
                 return <p className="m-auto" style={{ color: "#E83939" }}>Cancel</p>
             case "accept":
                 return <p className="m-auto" style={{ color: "#00D1FF" }}>On Progress</p>
+            case "finished":
+                return <p className="m-auto" style={{ color: "#00D1FF" }}>Finished</p>
             default:
                 break;
         }
@@ -114,6 +116,12 @@ export default function OrderPage() {
                     <Button disabled variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
                     :
                     <Button onClick={() => navigate("/send-project/" + id)} variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
+
+            case "finished":
+                return titleDropDown == "My Order" ?
+                    <Button variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
+                    :
+                    <Button disabled variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
             default:
                 break;
         }
@@ -130,10 +138,11 @@ export default function OrderPage() {
                 padding: 8px 45px
                 }`}
             </style>
-            {isLoading ? <LoadingSpinner /> :
+            {isLoading ?
+                <div className='m-auto d-flex justify-content-center align-items-center vh-100'>
+                    <LoadingSpinner />
+                </div> :
                 <>
-
-
                     <Container className="m-auto vh-100">
                         <Row className='d-flex'>
                             <Col>
@@ -171,7 +180,7 @@ export default function OrderPage() {
                                             <td onClick={() => handleShowModalOrderDetail(item)} style={{ color: "#0D33B9", cursor: "pointer" }}>{item.title}</td>
                                             <td>{ConvertFormatOnlyDate(item.start_date)}</td>
                                             <td>{ConvertFormatOnlyDate(item.end_date)}</td>
-                                            <td>
+                                            <td >
                                                 {getStatus(item.status)}
                                             </td>
                                             <td className="d-flex justify-content-center">

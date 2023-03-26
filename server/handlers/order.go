@@ -201,7 +201,7 @@ func (h *handlerOrder) SendProject(c echo.Context) error {
 	userLogin := c.Get("userLogin")
 	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
 
-	order, err := h.OrderRepository.GetOrder(ID, int(UserID))
+	order, err := h.OrderRepository.GetOffer(ID, int(UserID))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
@@ -210,8 +210,8 @@ func (h *handlerOrder) SendProject(c echo.Context) error {
 	}
 
 	request := orderdto.UpdateOrderRequest{
-		Description: c.FormValue("description"),
-		Status:      "finished",
+		DescriptionProject: c.FormValue("description_project"),
+		Status:             "finished",
 	}
 
 	if request.Description != "" {

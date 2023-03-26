@@ -78,12 +78,12 @@ export default function SendProject() {
             formData.set('image_2', !image2 ? "" : image2)
             formData.set('image_3', !image3 ? "" : image3)
             formData.set('image_4', !image4 ? "" : image4)
-            formData.set('title', form.title);
-            formData.set('description', form.description);
+            formData.set('description_project', form.description);
 
             const response = await API.patch(
-                '/post/user/' + id, formData, config
+                '/order/send-project/' + id, formData, config
             );
+            console.log(response)
             setIsLoading(false)
             clearImageHolder()
 

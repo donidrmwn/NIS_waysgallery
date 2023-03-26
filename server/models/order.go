@@ -20,7 +20,7 @@ type Order struct {
 	Price              int            `json:"price" gorm:"type: int" form:"price"`
 	Status             string         `json:"status" gorm:"type: varchar(255)" form:"status"`
 	DescriptionProject string         `json:"description_project" gorm:"type: varchar(255)" form:"description_project"`
-	PhotoProject       []PhotoProject `json:"photo_projects"`
+	PhotoProject       []PhotoProject `json:"photo_projects" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	CreatedAt          time.Time      `json:"-"`
 	UpdatedAt          time.Time      `json:"-"`
 }
