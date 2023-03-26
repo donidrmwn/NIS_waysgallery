@@ -48,7 +48,6 @@ export default function AddPostPage() {
     const [image4, setImage4] = useState(null)
 
     const [form, setForm] = useState({
-
         title: '',
         description: '',
     })

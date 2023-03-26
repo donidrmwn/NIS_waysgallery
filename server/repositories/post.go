@@ -38,11 +38,6 @@ func (r *repository) DeletePost(post models.Post, ID int) (models.Post, error) {
 	return post, err
 }
 
-func (r *repository) GetLatestPostIDByUserID(userID int) (models.Post, error) {
-	var post models.Post
-	err := r.db.Raw("SELECT MAX(id) FROM posts WHERE user_id = ?", userID).Scan(&post).Error
-	return post, err
-}
 func (r *repository) FindTodayPosts(todayDate time.Time, limit int) ([]models.Post, error) {
 	var posts []models.Post
 	err := r.db.Select("id,title,description").Order("created_at desc").Limit(limit).Where("cast( created_at AS DATE) = cast( ? AS DATE) ", todayDate).Preload("Photo", "line_no = 0").Find(&posts).Error

@@ -14,4 +14,5 @@ func OrderRoutes(e *echo.Group) {
 	h := handlers.HandlerOrder(orderRepository)
 
 	e.POST("/order/:id", middleware.Auth(h.CreateOrder))
+	e.GET("/order/my-order", middleware.Auth(h.FindOrder))
 }
