@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { ConvertFormatOnlyDate } from "../utils/ConvertFormatDate";
 import ModalOrderDetail from "../components/Modals/ModalOrderDetail";
 import { useNavigate } from "react-router-dom";
+import ModalViewProject from "../components/Modals/ModalViewProject";
 
 export default function OrderPage() {
 
@@ -16,10 +17,21 @@ export default function OrderPage() {
     const [endPoint, setEndPoint] = useState("/order/my-order")
     const [showModalOrderDetail, setShowModalOrderDetail] = useState(false)
     const [orderDetail, setOrderDetail] = useState(null)
+    const [showModalViewProject, setShowModalViewProject] = useState(false)
+
     const handleShowModalOrderDetail = (orderDetail) => {
         setShowModalOrderDetail(true)
         setOrderDetail(orderDetail)
     }
+
+    const handleShowModalViewProject = (orderDetail) => {
+        setShowModalViewProject(true)
+        setOrderDetail(orderDetail)
+    }
+    const handleCloseModalViewProject = () => {
+        setShowModalViewProject(false)
+    }
+
     const handleCloseModalOrderDetail = () => {
         setShowModalOrderDetail(false)
     }
@@ -67,7 +79,7 @@ export default function OrderPage() {
         }
     }
 
-    const GetAction = ({ status, id, endPoint }) => {
+    const GetAction = ({ item, status, id, endPoint }) => {
 
         const handleStatus = useMutation(async (status) => {
             try {
@@ -84,7 +96,7 @@ export default function OrderPage() {
                 const body = JSON.stringify(data)
                 const response = await API.patch(endPoint + id, body, config);
                 refetch()
-                console.log(response)
+            
             } catch (error) {
                 console.log(error)
             }
@@ -119,9 +131,11 @@ export default function OrderPage() {
 
             case "finished":
                 return titleDropDown == "My Order" ?
-                    <Button variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
+                    <Button onClick={() => handleShowModalViewProject(item)} variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
                     :
                     <Button disabled variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
+            case "success":
+                return <Image style={{ width: "30px", height: "30px" }} src={`${status}.png`} />
             default:
                 break;
         }
@@ -186,6 +200,7 @@ export default function OrderPage() {
                                             <td className="d-flex justify-content-center">
                                                 {/* {getAction(item.status, item.id)} */}
                                                 <GetAction
+                                                    item={item}
                                                     status={item.status}
                                                     id={item.id}
                                                     endPoint={"/order/my-offer/"}
@@ -205,6 +220,13 @@ export default function OrderPage() {
                 orderDetail={orderDetail}
                 getStatus={getStatus}
                 titleDropDown={titleDropDown}
+                refetch={refetch}
+            />
+            <ModalViewProject
+                orderDetail={orderDetail}
+                show={showModalViewProject}
+                onHide={handleCloseModalViewProject}
+                
             />
         </>
     )

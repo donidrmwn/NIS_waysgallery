@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import { useMutation } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { API } from "../config/api";
 
@@ -39,6 +39,7 @@ export default function SendProject() {
     }
     let { id } = useParams();
 
+    const navigate = useNavigate()
     const [previewMainImage, setPreviewMainImage] = useState(null)
     const [previewImage2, setPreviewImage2] = useState(null)
     const [previewImage3, setPreviewImage3] = useState(null)
@@ -50,7 +51,7 @@ export default function SendProject() {
     const [image4, setImage4] = useState(null)
 
     const [form, setForm] = useState({
-        description: '',
+        description_project: '',
     })
 
     const [isLoading, setIsLoading] = useState(false)
@@ -78,7 +79,7 @@ export default function SendProject() {
             formData.set('image_2', !image2 ? "" : image2)
             formData.set('image_3', !image3 ? "" : image3)
             formData.set('image_4', !image4 ? "" : image4)
-            formData.set('description_project', form.description);
+            formData.set('description_project', form.description_project);
 
             const response = await API.patch(
                 '/order/send-project/' + id, formData, config
@@ -86,7 +87,7 @@ export default function SendProject() {
             console.log(response)
             setIsLoading(false)
             clearImageHolder()
-
+            navigate("/order")
         } catch (error) {
             console.log(error)
             setIsLoading(false)
@@ -223,7 +224,7 @@ export default function SendProject() {
                             as="textarea"
                             onChange={handleChange}
                             placeholder="Description"
-                            name="description"
+                            name="description_project"
                         />
                         <Row className="d-flex justify-content-center gap-4 mt-5">
                             {isLoading ?

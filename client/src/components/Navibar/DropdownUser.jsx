@@ -39,10 +39,7 @@ export default function DropdownUser({state}) {
         const response = await API.get("/profile/user/" + state.user.id);
         return response.data.data;
     })
-    // let { refetch: refetchProfile } = useQuery("profile", async () => {
-    //     const response = await API.get("/profile/user/" + state.user.id);
-    //     return response.data.data;
-    // })
+    
 
 
     return (

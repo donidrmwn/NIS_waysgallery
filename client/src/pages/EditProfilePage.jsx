@@ -165,7 +165,7 @@ export default function EditProfilePage() {
 
     return (
         <>
-            <Container className="p-5">
+            <Container className="p-5 vh-100">
                 <Row className="d-flex gap-2">
                     <Dropzone onDrop={best_art => {
                         let url = URL.createObjectURL(best_art[0]);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { API } from "../config/api";
 
@@ -47,6 +48,7 @@ export default function AddPostPage() {
     const [image3, setImage3] = useState(null)
     const [image4, setImage4] = useState(null)
 
+    const navigate = useNavigate()
     const [form, setForm] = useState({
         title: '',
         description: '',
@@ -86,6 +88,7 @@ export default function AddPostPage() {
             setIsLoading(false)
             clearImageHolder()
             console.log(response)
+            navigate("/home")
         } catch (error) {
             console.log(error)
             setIsLoading(false)

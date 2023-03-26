@@ -100,9 +100,9 @@ export default function ProfilePage() {
     return (
         <>
 
-            <div style={style.rectangle17} className="rounded"></div>
-            <Container fluid className="px-5 mt-5">
-                <Row className="mb-4">
+            <div style={style.rectangle17} className="rounded "></div>
+            <Container fluid className="px-5 mt-5 ">
+                <Row className="mb-4 ">
                     <Col md="6">
                         <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
                         <h5 className="fw-bold mb-4">{profile?.name}</h5>
@@ -138,7 +138,7 @@ export default function ProfilePage() {
                         <Image className="w-100 rounded" style={{ height: "484px", zIndex: 1 }} src={`${profile?.best_art ? profile?.best_art : "/default-image.jpg"}`} />
                     </Col>
                 </Row>
-                <Row className="mb-5">
+                <Row className="">
                     <p className="fw-bold">
                         {id == state.user.id ?
                             <>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, FormGroup, Image, Row } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import { useMutation } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { API } from "../config/api";
 
@@ -47,6 +47,7 @@ export default function EditPostPage() {
     const [image2, setImage2] = useState(null)
     const [image3, setImage3] = useState(null)
     const [image4, setImage4] = useState(null)
+    const navigate = useNavigate()
     let { id } = useParams();
     const [form, setForm] = useState({
 
@@ -105,7 +106,7 @@ export default function EditPostPage() {
             );
             setIsLoading(false)
             clearImageHolder()
-          
+            navigate("/detail-post/"+id)
         } catch (error) {
             console.log(error)
             setIsLoading(false)

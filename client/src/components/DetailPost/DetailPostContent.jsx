@@ -24,9 +24,7 @@ export default function DetailPostContent({ photos }) {
                 <Row md="4" className="w-100 d-flex gap-3 justify-content-center  mt-4 mb-5 p-2">
                     {photos?.map((item, index) => {
                         if (index == 0) {
-                            return (
-                                null
-                            )
+                            return (null)
                         }
                         else {
                             return (

@@ -15,6 +15,7 @@ import { API, setAuthToken } from './config/api';
 import { UserContext } from './context/userContext';
 import { PrivateRouteLogin } from './components/privateRoute';
 import EditPostPage from './pages/EditPostPage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
               <Route path='/edit-profile/:id' element={<><EditProfilePage /></>} />
               <Route path='/hired/:id' element={<><HiredPage /></>} />
               <Route path='/order' element={<><OrderPage /></>} />
+              <Route path='/project-detail/:id' element={<><ProjectDetailPage /></>} />
             </Route>
           </Routes>
         </Container>

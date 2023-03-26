@@ -214,8 +214,8 @@ func (h *handlerOrder) SendProject(c echo.Context) error {
 		Status:             "finished",
 	}
 
-	if request.Description != "" {
-		order.Description = request.Description
+	if request.DescriptionProject != "" {
+		order.DescriptionProject = request.DescriptionProject
 	}
 
 	if request.Status != "" {
