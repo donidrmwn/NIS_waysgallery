@@ -5,6 +5,7 @@ import { API } from '../config/api'
 import Dropzone, { useDropzone } from 'react-dropzone'
 import LoadingSpinner from "../components/LoadingSpinner";
 import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 export default function EditProfilePage() {
     const style = {
         mainProjectImage: {
@@ -39,7 +40,7 @@ export default function EditProfilePage() {
 
     }
 
-
+    const navigate = useNavigate()
     const [state] = useContext(UserContext)
     const [previewBestArt, setPreviewBestArt] = useState(null)
     const [previewProfilePicture, setPreviewProfilePicture] = useState(null)
@@ -104,7 +105,7 @@ export default function EditProfilePage() {
             );
             console.log(response.data)
             setIsLoading(false);
-
+            navigate("/profile/"+state.user.id)
         } catch (error) {
             console.log(error)
             setIsLoading(false)

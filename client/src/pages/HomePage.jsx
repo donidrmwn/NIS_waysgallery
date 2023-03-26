@@ -15,10 +15,16 @@ export default function HomePage() {
     const [endPoint, setEndPoint] = useState("/post/today?limit=" + 10)
     const [showLimit, setShowLimit] = useState(10)
     const [searchPostName, setSearchPostName] = useState(null)
+
     let { data: posts, refetch } = useQuery("postsCache", async () => {
         const response = await API.get(endPoint);
         setIsLoading(false)
         return response.data;
+    })
+
+    let { data: profiles, refetch: refetchProfile } = useQuery("profileSearchCache", async () => {
+        const response = await API.get("/profile/search?profile_name=" + searchPostName)
+        return response.data
     })
 
     const handleShowToday = () => {
@@ -57,16 +63,21 @@ export default function HomePage() {
 
     useEffect(() => {
         if (searchPostName != "") {
-
+            
             setEndPoint("/post/search?post_name=" + searchPostName)
-        } else {
+            refetchProfile()
+            console.log(searchPostName)
+        } 
+        else {
+            console.log(searchPostName)
             setEndPoint("/post/today?limit=" + 10)
         }
-
     }, [searchPostName])
 
     useEffect(() => {
-        handleShowToday()
+        if (searchPostName) {
+            handleShowToday()
+        }
     }, [])
     return (
         <>
@@ -111,7 +122,7 @@ export default function HomePage() {
                 <h3 className='my-5'>
 
                     {
-                        searchPostName != "" ?
+                        searchPostName ?
                             <p>Search</p> :
                             titleDropDown == "Today" ?
                                 <p>Today's post</p> :
@@ -128,7 +139,7 @@ export default function HomePage() {
                     </div>
                     :
                     <>
-                        {searchPostName == "" ?
+                        {!searchPostName  ?
                             <>
                                 {posts.data.length <= 0 ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
                                     : <>
@@ -146,7 +157,10 @@ export default function HomePage() {
                             </>
                             :
                             <>
-                                <TabbedSearch posts={posts} />
+                                <TabbedSearch
+                                    posts={posts}
+                                    profiles={profiles}
+                                />
                             </>
                         }
                     </>
