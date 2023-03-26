@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Container } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import DetailPostFooter from "../components/DetailPost/DetailPostFooter";
 import DetailPostHeader from "../components/DetailPost/DetailPostHeader";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { API } from "../config/api";
-import { UserContext } from "../context/userContext";
+
 
 export default function DetailPostPage() {
     let { id } = useParams();

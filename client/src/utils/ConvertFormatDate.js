@@ -5,3 +5,11 @@ export function ConvertFormatDate(date){
 
     return formattedDate//date.toString("en-US",options)
 }
+
+export function ConvertFormatOnlyDate(date){
+    let options = {  year: 'numeric', month: 'long', day: 'numeric' };
+    let transDate  = new Date(date);
+    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(transDate)
+
+    return formattedDate//date.toString("en-US",options)
+}

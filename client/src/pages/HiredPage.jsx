@@ -76,7 +76,7 @@ export default function HiredPage() {
     return (
         <>
 
-            <Container className="p-5">
+            <Container className="p-5 vh-100 ">
                 <Form className="d-grid gap-4">
                     <Form.Control
                         className="main-input"

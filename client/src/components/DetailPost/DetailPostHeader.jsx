@@ -96,7 +96,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                                     }
                                 </Button>
                             }
-                            <Button onClick={() => {navigate("/hired/"+userID)}} className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
+                            <Button onClick={() => { navigate("/hired/" + userID) }} className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
                         </>
                     }
 

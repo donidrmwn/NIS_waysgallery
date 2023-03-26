@@ -89,3 +89,20 @@ func (h *handlerOrder) FindOrder(c echo.Context) error {
 		Data: orders,
 	})
 }
+
+func (h *handlerOrder) FindOffer(c echo.Context) error {
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+
+	offers, err := h.OrderRepository.FindOffer(int(UserID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: offers,
+	})
+}

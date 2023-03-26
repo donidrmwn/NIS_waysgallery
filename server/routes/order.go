@@ -15,4 +15,5 @@ func OrderRoutes(e *echo.Group) {
 
 	e.POST("/order/:id", middleware.Auth(h.CreateOrder))
 	e.GET("/order/my-order", middleware.Auth(h.FindOrder))
+	e.GET("/order/my-offer", middleware.Auth(h.FindOffer))
 }
