@@ -19,6 +19,7 @@ func PostRoutes(e *echo.Group) {
 	e.GET("/post/all", h.FindAllPosts)
 	e.GET("/post/followed", middleware.Auth(h.FindUserPostsFollowed))
 	e.GET("/post/:id", h.GetPost)
+	e.GET("/post/search", h.SearchPost)
 	e.POST("/post/user", middleware.Auth(
 		middleware.UploadFile(
 			middleware.UploadFile(

@@ -17,6 +17,7 @@ type PostRepository interface {
 	GetPost(postID int) (models.Post, error)
 	GetPostAuth(postID int, userID int) (models.Post, error)
 	FindUserPostsFollowed(userID int, limit int) ([]models.Post, error)
+	SearchPost(postName string) ([]models.Post, error)
 }
 
 func RepositoryPost(db *gorm.DB) *repository {
@@ -53,6 +54,13 @@ func (r *repository) FindAllPosts(limit int) ([]models.Post, error) {
 func (r *repository) FindUserPosts(userID int) ([]models.Post, error) {
 	var posts []models.Post
 	err := r.db.Order("created_at desc").Where("user_id = ?", userID).Preload("Photo", "line_no = 0").Find(&posts).Error
+	return posts, err
+}
+
+func (r *repository) SearchPost(postName string) ([]models.Post, error) {
+	var posts []models.Post
+	seatchPostName := "%" + postName + "%"
+	err := r.db.Order("created_at desc").Where("title ilike ?", seatchPostName).Preload("Photo", "line_no = 0").Find(&posts).Error
 	return posts, err
 }
 

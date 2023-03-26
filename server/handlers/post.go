@@ -106,6 +106,21 @@ func (h *handlerPost) UpdatePost(c echo.Context) error {
 	})
 }
 
+func (h *handlerPost) SearchPost(c echo.Context) error {
+	postName := c.QueryParam("post_name")
+	posts, err := h.PostRepository.SearchPost(postName)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: posts,
+	})
+}
+
 func (h *handlerPost) CreatePost(c echo.Context) error {
 	var ctx = context.Background()
 	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
