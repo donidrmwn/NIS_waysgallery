@@ -13,6 +13,7 @@ type OrderRepository interface {
 	GetOrder(ID int, userID int) (models.Order, error)
 	GetOffer(ID int, userID int) (models.Order, error)
 	UpdateOrder(order models.Order) (models.Order, error)
+	GetFinishedProject(ID int, userID int) (models.Order, error)
 }
 
 func RepositoryOrder(db *gorm.DB) *repository {
@@ -33,6 +34,12 @@ func (r *repository) FindOrder(userID int) ([]models.Order, error) {
 func (r *repository) FindOffer(userID int) ([]models.Order, error) {
 	var order []models.Order
 	err := r.db.Order("id desc").Where("vendor_id = ?", userID).Preload("ClientUser.Profile").Find(&order).Error
+	return order, err
+}
+
+func (r *repository) GetFinishedProject(ID int, userID int) (models.Order, error) {
+	var order models.Order
+	err := r.db.Where("client_id = ?", userID).Preload("PhotoProject").First(&order, ID).Error
 	return order, err
 }
 

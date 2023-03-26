@@ -268,3 +268,23 @@ func (h *handlerOrder) SendProject(c echo.Context) error {
 		Data: orderData,
 	})
 }
+
+func (h *handlerOrder) GetFinishedProject(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+	order, err := h.OrderRepository.GetFinishedProject(ID, int(UserID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: order,
+	})
+
+}
