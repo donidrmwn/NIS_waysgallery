@@ -24,7 +24,7 @@ func (r *repository) CreateProfile(profile models.Profile) (models.Profile, erro
 
 func (r *repository) GetProfileByUserID(userID int) (models.Profile, error) {
 	var profile models.Profile
-	err := r.db.Preload("User").Preload("User.").First(&profile, "user_id = ?", userID).Error
+	err := r.db.Preload("User").First(&profile, "user_id = ?", userID).Error
 	return profile, err
 }
 
@@ -36,6 +36,6 @@ func (r *repository) UpdateProfile(profile models.Profile) (models.Profile, erro
 func (r *repository) SearchProfile(profileName string) ([]models.Profile, error) {
 	var profiles []models.Profile
 	searchProfileName := profileName + "%"
-	err := r.db.Where("name ilike ?", searchProfileName).Preload("User").Find(&profiles).Error
+	err := r.db.Preload("User").Find(&profiles, "name ilike ?", searchProfileName).Error
 	return profiles, err
 }
