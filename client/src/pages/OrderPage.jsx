@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Dropdown, DropdownButton, Image, Row, Table } from "react-bootstrap";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { API } from "../config/api";
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ConvertFormatOnlyDate } from "../utils/ConvertFormatDate";
@@ -11,8 +11,8 @@ export default function OrderPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [columnName, setColumnName] = useState("Vendor")
     const [endPoint, setEndPoint] = useState("/order/my-order")
-    const [showModalOrderDetail,setShowModalOrderDetail] = useState(false)
-    const [orderDetail,setOrderDetail] = useState(null)
+    const [showModalOrderDetail, setShowModalOrderDetail] = useState(false)
+    const [orderDetail, setOrderDetail] = useState(null)
     const handleShowModalOrderDetail = (orderDetail) => {
         setShowModalOrderDetail(true)
         setOrderDetail(orderDetail)
@@ -24,7 +24,11 @@ export default function OrderPage() {
         const response = await API.get(endPoint);
         setIsLoading(false)
         return response.data;
-    })
+    },
+        // {
+        //   refetchInterval: ,
+        // } 
+    )
 
     const handleMyOrder = () => {
         setTitleDropDown("My Order")
@@ -46,18 +50,72 @@ export default function OrderPage() {
     const getStatus = (status) => {
         switch (status) {
             case "waiting":
-
                 return <p className="m-auto" style={{ color: "#FF9900" }}>Waiting Accept</p>
             case "success":
-
                 return <p className="m-auto" style={{ color: "#78A85A" }}>Success</p>
             case "cancel":
-
                 return <p className="m-auto" style={{ color: "#E83939" }}>Cancel</p>
+            case "accept":
+                return <p className="m-auto" style={{ color: "#00D1FF" }}>On Progress</p>
             default:
                 break;
         }
     }
+
+    const GetAction = ({ status, id, endPoint }) => {
+
+        const handleStatus = useMutation(async (status) => {
+            try {
+                console.log(status)
+
+                const config = {
+                    headers: {
+                        'Content-type': 'application/json',
+                    }
+                };
+                const data = {
+                    status: status
+                }
+                const body = JSON.stringify(data)
+                const response = await API.patch(endPoint + id, body, config);
+                refetch()
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+
+        switch (status) {
+            case "waiting":
+                return titleDropDown == "My Order" ?
+                    <Image
+                        style={{ width: "30px", height: "30px" }}
+                        src={`${status}.png`}
+                    /> :
+                    <div className="d-flex gap-3">
+                        <Button onClick={() => handleStatus.mutate("cancel")}
+                            variant="danger" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "80px", height: "27px", fontSize: "13px" }}>
+                            Cancel</Button>
+                        <Button onClick={() => handleStatus.mutate("accept")}
+                            variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "80px", height: "27px", fontSize: "13px" }}>
+                            Approve</Button>
+                    </div>
+
+            case "cancel":
+                return <Image style={{ width: "30px", height: "30px" }} src={`${status}.png`} />
+
+            case "accept":
+                return titleDropDown == "My Order" ?
+                    <Button disabled variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
+                    :
+                    <Button variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
+            default:
+                break;
+        }
+    }
+
+
 
     return (
         <>
@@ -70,7 +128,7 @@ export default function OrderPage() {
             </style>
             {isLoading ? <LoadingSpinner /> :
                 <>
-                    {console.log(orders.data)}
+
 
                     <Container className="m-auto vh-100">
                         <Row className='d-flex'>
@@ -113,18 +171,12 @@ export default function OrderPage() {
                                                 {getStatus(item.status)}
                                             </td>
                                             <td className="d-flex justify-content-center">
-                                                {
-                                                    titleDropDown == "My Offer" ?
-                                                        <div className="d-flex gap-3">
-                                                            <Button variant="danger" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "80px", height: "27px", fontSize: "13px" }}>Cancel</Button>
-                                                            <Button variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "80px", height: "27px", fontSize: "13px" }}>Approve</Button>
-                                                        </div>
-                                                        :
-                                                        <Image
-                                                            style={{ width: "30px", height: "30px" }}
-                                                            src={`${item.status}.png`}
-                                                        />
-                                                }
+                                                {/* {getAction(item.status, item.id)} */}
+                                                <GetAction
+                                                    status={item.status}
+                                                    id={item.id}
+                                                    endPoint={"/order/my-offer/"}
+                                                />
                                             </td>
                                         </tr>
                                     ))}
@@ -134,10 +186,12 @@ export default function OrderPage() {
                     </Container>
                 </>
             }
-            <ModalOrderDetail 
+            <ModalOrderDetail
                 show={showModalOrderDetail}
                 onHide={handleCloseModalOrderDetail}
                 orderDetail={orderDetail}
+                getStatus={getStatus}
+                titleDropDown={titleDropDown}
             />
         </>
     )
