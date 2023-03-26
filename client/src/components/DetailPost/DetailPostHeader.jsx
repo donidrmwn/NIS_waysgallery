@@ -19,7 +19,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
     const [isLoading, setIsLoading] = useState(false)
     const [state] = useContext(UserContext)
     const userID = user?.id
-    const navigate = useNavigate("/")
+    const navigate = useNavigate()
     const profile = user?.profile
 
     let { data: follow, refetch } = useQuery("followCache", async () => {
@@ -96,7 +96,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                                     }
                                 </Button>
                             }
-                            <Button className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
+                            <Button onClick={() => {navigate("/hired/"+userID)}} className='fw-bold h-75' style={{ width: "100px", backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}>Hire</Button>
                         </>
                     }
 

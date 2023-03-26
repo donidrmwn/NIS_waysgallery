@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, DropdownButton, Form, Image, Row } from 'react-bootstrap'
-import PhotoAlbum from "react-photo-album";
+
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
-import photos from '../components/photos/photos';
+
 import { API } from '../config/api';
 import Gallery from '../utils/Gallery';
 export default function HomePage() {
+    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(true)
     const [titleDropDown, setTitleDropDown] = useState("Today")
     const [endPoint, setEndPoint] = useState("/post/today?limit=" + 10)
@@ -31,11 +33,8 @@ export default function HomePage() {
         setEndPoint("/post/followed?limit=" + 10)
     }
 
-    useEffect(() => {
-        // setIsLoading(true)
-        
+    useEffect(() => { 
         refetch()
-       
     }, [endPoint, titleDropDown])
 
 
@@ -47,8 +46,8 @@ export default function HomePage() {
         } else if (titleDropDown == "Followed") {
             setEndPoint("/post/followed?limit=" + showLimit)
         }
-        
-    }, [showLimit, titleDropDown])
+
+    }, [showLimit])
 
     return (
         <>
@@ -60,14 +59,13 @@ export default function HomePage() {
                 }`}
             </style>
 
-            <Container>
+            <Container className='vh-100'>
                 <Row className='d-flex'>
                     <Col>
                         <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
                             <Dropdown.Item onClick={handleShowToday}>Today</Dropdown.Item>
                             <Dropdown.Item onClick={handleShowAll}>Show All</Dropdown.Item>
                             <Dropdown.Item onClick={handleFollowed}>Followed</Dropdown.Item>
-                            {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
                         </DropdownButton>
                     </Col>
                     <Col className='d-flex justify-content-end'>
@@ -95,25 +93,34 @@ export default function HomePage() {
                         <p>Today's post</p> :
                         titleDropDown == "Show All" ?
                             <p>All post</p>
-                            : null
+                            : <p>Followed</p>
                     }
-
                 </h3>
                 {isLoading ?
-                    <div className='m-auto d-flex justify-content-center align-items-center'>
+                    <div className='m-auto d-flex justify-content-center align-items-center vh-100'>
                         <LoadingSpinner />
                     </div>
                     :
                     <>
-                        <Gallery data={posts} />
-                        <div className='m-auto d-flex justify-content-center align-items-end'>
-                            <Button
-                                style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
-                                onClick={() => setShowLimit(showLimit + 10)}
-                                className='my-5 fs-3 px-5 fw-bold'>
-                                Show More
-                            </Button>
-                        </div>
+                        {posts.data.length <= 0 ?
+                            <>
+                                {console.log(posts)}
+                                <p>There's nothing to show. Click <span onClick={()=> navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                            </>
+                            :
+                            <>
+                                <Gallery data={posts} />
+                                <div className='m-auto d-flex justify-content-center align-items-center'>
+                                    <Button
+                                        style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
+                                        onClick={() => setShowLimit(showLimit + 10)}
+                                        className='my-5 fs-3 px-5 fw-bold'>
+                                        Show More
+                                    </Button>
+                                </div>
+                            </>
+                        }
+
                     </>
                 }
 

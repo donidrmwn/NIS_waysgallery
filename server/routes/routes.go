@@ -7,4 +7,5 @@ func RouteInit(e *echo.Group) {
 	ProfileRoutes(e)
 	PostRoutes(e)
 	FollowRoutes(e)
+	OrderRoutes(e)
 }

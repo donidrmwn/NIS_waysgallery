@@ -22,8 +22,9 @@ export default function DetailPostPage() {
 
     return (
         <>
+        
             {isLoading ?
-                <div className='m-auto d-flex justify-content-center align-items-center'>
+                <div className='m-auto d-flex justify-content-center align-items-center vh-100'>
                     <LoadingSpinner />
                 </div> :
                 <Container className="d-grid w-50 px-5 justify-content-center m-auto">
