@@ -10,6 +10,7 @@ type ProfileRepository interface {
 	CreateProfile(Profile models.Profile) (models.Profile, error)
 	GetProfileByUserID(UserID int) (models.Profile, error)
 	UpdateProfile(Profile models.Profile) (models.Profile, error)
+	SearchProfile(profileName string) ([]models.Profile, error)
 }
 
 func RepositoryProfile(db *gorm.DB) *repository {
@@ -30,4 +31,11 @@ func (r *repository) GetProfileByUserID(userID int) (models.Profile, error) {
 func (r *repository) UpdateProfile(profile models.Profile) (models.Profile, error) {
 	err := r.db.Save(&profile).Error
 	return profile, err
+}
+
+func (r *repository) SearchProfile(profileName string) ([]models.Profile, error) {
+	var profiles []models.Profile
+	searchProfileName := "%" + profileName + "%"
+	err := r.db.Order("created_at desc").Where("name ilike ?", searchProfileName).Preload("User").Find(&profiles).Error
+	return profiles, err
 }

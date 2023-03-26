@@ -3,6 +3,7 @@ import { Button, Col, Container, Dropdown, DropdownButton, Form, Image, Row } fr
 
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import TabbedSearch from '../components/Home/TabbedSearch';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 import { API } from '../config/api';
@@ -15,21 +16,24 @@ export default function HomePage() {
     const [showLimit, setShowLimit] = useState(10)
     const [searchPostName, setSearchPostName] = useState(null)
     let { data: posts, refetch } = useQuery("postsCache", async () => {
-
         const response = await API.get(endPoint);
         setIsLoading(false)
         return response.data;
     })
 
     const handleShowToday = () => {
+        setSearchPostName("")
         setTitleDropDown("Today")
         setEndPoint("/post/today?limit=" + 10)
+
     }
     const handleShowAll = () => {
+        setSearchPostName("")
         setTitleDropDown("Show All")
         setEndPoint("/post/all?limit=" + 10)
     }
     const handleFollowed = () => {
+        setSearchPostName("")
         setTitleDropDown("Followed")
         setEndPoint("/post/followed?limit=" + 10)
     }
@@ -41,6 +45,7 @@ export default function HomePage() {
 
     useEffect(() => {
         if (titleDropDown == "Show All") {
+
             setEndPoint("/post/all?limit=" + showLimit)
         } else if (titleDropDown == "Today") {
             setEndPoint("/post/today?limit=" + showLimit)
@@ -52,13 +57,17 @@ export default function HomePage() {
 
     useEffect(() => {
         if (searchPostName != "") {
-            console.log(searchPostName)
-            setEndPoint("/post/search?post_name="+searchPostName)
+
+            setEndPoint("/post/search?post_name=" + searchPostName)
         } else {
             setEndPoint("/post/today?limit=" + 10)
         }
 
     }, [searchPostName])
+
+    useEffect(() => {
+        handleShowToday()
+    }, [])
     return (
         <>
             <style type="text/css">
@@ -91,7 +100,7 @@ export default function HomePage() {
                                         backgroundColor: "#E7E7E7"
                                     }}
                                     name="product_name"
-                                    onChange={(e) => {setSearchPostName(e.target.value)}}
+                                    onChange={(e) => { setSearchPostName(e.target.value) }}
                                     type='text'
                                     placeholder='Search'
                                 />
@@ -101,11 +110,16 @@ export default function HomePage() {
                 </Row>
                 <h3 className='my-5'>
 
-                    {titleDropDown == "Today" ?
-                        <p>Today's post</p> :
-                        titleDropDown == "Show All" ?
-                            <p>All post</p>
-                            : <p>Followed</p>
+                    {
+                        searchPostName != "" ?
+                            <p>Search</p> :
+                            titleDropDown == "Today" ?
+                                <p>Today's post</p> :
+                                titleDropDown == "Show All" ?
+                                    <p>All post</p>
+                                    : titleDropDown == "Followed" ?
+                                        <p>Followed</p>
+                                        : null
                     }
                 </h3>
                 {isLoading ?
@@ -114,25 +128,27 @@ export default function HomePage() {
                     </div>
                     :
                     <>
-                        {posts.data.length <= 0 ?
+                        {searchPostName == "" ?
                             <>
-                                {console.log(posts)}
-                                <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                                {posts.data.length <= 0 ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                                    : <>
+                                        <Gallery data={posts} />
+                                        <div className='m-auto d-flex justify-content-center align-items-center'>
+                                            <Button
+                                                style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
+                                                onClick={() => setShowLimit(showLimit + 10)}
+                                                className='my-5 fs-3 px-5 fw-bold'>
+                                                Show More
+                                            </Button>
+                                        </div>
+                                    </>
+                                }
                             </>
                             :
                             <>
-                                <Gallery data={posts} />
-                                <div className='m-auto d-flex justify-content-center align-items-center'>
-                                    <Button
-                                        style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
-                                        onClick={() => setShowLimit(showLimit + 10)}
-                                        className='my-5 fs-3 px-5 fw-bold'>
-                                        Show More
-                                    </Button>
-                                </div>
+                                <TabbedSearch posts={posts} />
                             </>
                         }
-
                     </>
                 }
 

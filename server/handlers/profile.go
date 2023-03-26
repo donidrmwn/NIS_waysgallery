@@ -125,3 +125,18 @@ func (h *handlerProfile) UpdateProfile(c echo.Context) error {
 		Data: convertResponseProfile(data),
 	})
 }
+
+func (h *handlerProfile) SearchProfile(c echo.Context) error {
+	profileName := c.QueryParam("profile_name")
+	profiles, err := h.ProfileRepository.SearchProfile(profileName)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: profiles,
+	})
+}

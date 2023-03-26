@@ -59,8 +59,8 @@ func (r *repository) FindUserPosts(userID int) ([]models.Post, error) {
 
 func (r *repository) SearchPost(postName string) ([]models.Post, error) {
 	var posts []models.Post
-	seatchPostName := "%" + postName + "%"
-	err := r.db.Order("created_at desc").Where("title ilike ?", seatchPostName).Preload("Photo", "line_no = 0").Find(&posts).Error
+	searchPostName := "%" + postName + "%"
+	err := r.db.Order("created_at desc").Where("title ilike ?", searchPostName).Preload("Photo", "line_no = 0").Find(&posts).Error
 	return posts, err
 }
 
