@@ -36,6 +36,6 @@ func (r *repository) UpdateProfile(profile models.Profile) (models.Profile, erro
 func (r *repository) SearchProfile(profileName string) ([]models.Profile, error) {
 	var profiles []models.Profile
 	searchProfileName := "%" + profileName
-	err := r.db.Where("name ilike ?", searchProfileName, searchProfileName).Preload("User").Find(&profiles).Error
+	err := r.db.Where("name ilike ?", searchProfileName).Preload("User").Find(&profiles).Error
 	return profiles, err
 }
