@@ -1,27 +1,35 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 	orderdto "waysgallery/dto/order"
+	photoprojectdto "waysgallery/dto/photo_project"
 	dto "waysgallery/dto/result"
 	"waysgallery/models"
 	"waysgallery/repositories"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
 type handlerOrder struct {
-	OrderRepository repositories.OrderRepository
+	OrderRepository        repositories.OrderRepository
+	PhotoProjectRepository repositories.PhotoProjectRepository
 }
 
 func HandlerOrder(
 	OrderRepository repositories.OrderRepository,
+	PhotoProjectRepository repositories.PhotoProjectRepository,
 ) *handlerOrder {
 	return &handlerOrder{
 		OrderRepository,
+		PhotoProjectRepository,
 	}
 }
 
@@ -185,4 +193,78 @@ func (h *handlerOrder) UpdateOrderStatus(c echo.Context) error {
 		Data: data,
 	})
 
+}
+
+func (h *handlerOrder) SendProject(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	userLogin := c.Get("userLogin")
+	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
+
+	order, err := h.OrderRepository.GetOrder(ID, int(UserID))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	request := orderdto.UpdateOrderRequest{
+		Description: c.FormValue("description"),
+		Status:      "finished",
+	}
+
+	if request.Description != "" {
+		order.Description = request.Description
+	}
+
+	if request.Status != "" {
+		order.Status = request.Status
+	}
+	orderData, err := h.OrderRepository.UpdateOrder(order)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+	}
+
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
+	for idx, data := range arrImage {
+		image := c.Get(data).(string)
+
+		if data == "main_image" && image == "" {
+			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+				Code:    http.StatusBadRequest,
+				Message: "Main image must be included",
+			})
+		}
+
+		var urlCloudinary string = ""
+		if image != "" {
+			resp, _ := cld.Upload.Upload(ctx, image, uploader.UploadParams{Folder: "waysgallery"})
+			urlCloudinary = resp.SecureURL
+		}
+		photoRequest := photoprojectdto.CreatePhotoProjectRequest{
+			OrderID:      orderData.ID,
+			LineNo:       idx,
+			PhotoProject: urlCloudinary,
+		}
+		photo_project := models.PhotoProject{
+			OrderID:      photoRequest.OrderID,
+			LineNo:       photoRequest.LineNo,
+			PhotoProject: photoRequest.PhotoProject,
+		}
+		h.PhotoProjectRepository.CreatePhotoProject(photo_project)
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: orderData,
+	})
 }

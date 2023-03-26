@@ -77,7 +77,7 @@ function App() {
               <Route path='/edit-post/:id' element={<><EditPostPage /></>} />
               <Route path='/profile/:id' element={<><ProfilePage /></>} />
               <Route path='/upload' element={<><AddPostPage /></>} />
-              <Route path='/send-project' element={<><SendProjectPage /></>} />
+              <Route path='/send-project/:id' element={<><SendProjectPage /></>} />
               <Route path='/edit-profile/:id' element={<><EditProfilePage /></>} />
               <Route path='/hired/:id' element={<><HiredPage /></>} />
               <Route path='/order' element={<><OrderPage /></>} />

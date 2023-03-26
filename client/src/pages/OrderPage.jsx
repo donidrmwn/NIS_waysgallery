@@ -5,8 +5,11 @@ import { API } from "../config/api";
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ConvertFormatOnlyDate } from "../utils/ConvertFormatDate";
 import ModalOrderDetail from "../components/Modals/ModalOrderDetail";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderPage() {
+
+    const navigate = useNavigate()
     const [titleDropDown, setTitleDropDown] = useState("My Order")
     const [isLoading, setIsLoading] = useState(true)
     const [columnName, setColumnName] = useState("Vendor")
@@ -87,6 +90,7 @@ export default function OrderPage() {
 
 
         switch (status) {
+
             case "waiting":
                 return titleDropDown == "My Order" ?
                     <Image
@@ -109,7 +113,7 @@ export default function OrderPage() {
                 return titleDropDown == "My Order" ?
                     <Button disabled variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>View Project</Button>
                     :
-                    <Button variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
+                    <Button onClick={() => navigate("/send-project/" + id)} variant="success" className="fw-bold d-flex justify-content-center align-items-center" style={{ width: "120px", height: "27px", fontSize: "13px" }}>Send Project</Button>
             default:
                 break;
         }

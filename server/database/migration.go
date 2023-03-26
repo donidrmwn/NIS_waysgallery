@@ -11,6 +11,7 @@ func RunMigration() {
 		&models.User{},
 		&models.Profile{},
 		&models.Photo{},
+		&models.PhotoProject{},
 		&models.Post{},
 		&models.Follow{},
 		&models.Order{},
