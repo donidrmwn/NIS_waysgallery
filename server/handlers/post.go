@@ -270,9 +270,9 @@ func (h *handlerPost) GetPost(c echo.Context) error {
 }
 
 func (h *handlerPost) GetPostCount(c echo.Context) error {
-	userLogin := c.Get("userLogin")
-	UserID := userLogin.(jwt.MapClaims)["id"].(float64)
-	postCount, err := h.PostRepository.GetPostCount(int(UserID))
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	postCount, err := h.PostRepository.GetPostCount(ID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
