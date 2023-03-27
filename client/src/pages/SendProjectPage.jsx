@@ -133,7 +133,7 @@ export default function SendProject() {
                     break;
                 default:
                     clearImageHolder()
-                    break;
+                    break
             }
         });
     }
