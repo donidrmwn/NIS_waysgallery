@@ -33,8 +33,13 @@ export default function ProjectDetail() {
     )
 
     function openImage() {
-        projectDetail.forEach(element => {
-            console.log("element", element)
+        console.log(projectDetail)
+        let alink = document.createElement('a');
+        projectDetail?.photo_projects?.map((element, index) => {
+            alink.href = element.photo_project;
+            alink.target = "_blank"
+            alink.download = 'Image' + index;
+            alink.click();
         });
     }
     const handleStatus = useMutation(async (status) => {
@@ -50,8 +55,8 @@ export default function ProjectDetail() {
                 status: status
             }
             const body = JSON.stringify(data)
-            //const response = await API.patch("/order/my-order/" + projectDetail?.id, body, config);
-
+            const response = await API.patch("/order/my-order/" + projectDetail?.id, body, config);
+            console.log(response)
             refetch()
             setIsLoading(false)
             navigate("/order")
@@ -95,7 +100,7 @@ export default function ProjectDetail() {
                             <p className='m-0 mb-5' style={{ height: "500px", overflow: "auto" }}>
                                 {projectDetail?.description_project}
                             </p>
-                            <Button onClick={() => {handleStatus.mutate("success");openImage()}} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
+                            <Button onClick={() => { handleStatus.mutate("success"); openImage() }} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
                         </Col>
                     </Row>
 
