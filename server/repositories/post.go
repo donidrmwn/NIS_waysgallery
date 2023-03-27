@@ -87,7 +87,7 @@ func (r *repository) GetPostAuth(postID int, userID int) (models.Post, error) {
 
 func (r *repository) GetPostCount(userID int) (int64, error) {
 	var countPost int64
-	var post models.Post
-	err := r.db.Model(&post).Where("user_id = ?", userID).Count(&countPost).Error
+
+	err := r.db.Table("posts").Where("user_id = ?", userID).Count(&countPost).Error
 	return countPost, err
 }
