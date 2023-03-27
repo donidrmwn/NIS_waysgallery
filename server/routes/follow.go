@@ -18,4 +18,6 @@ func FollowRoutes(e *echo.Group) {
 	e.GET("/follow/:id", middleware.Auth(h.GetFollow))
 	e.GET("/follow/count-follower/:id", h.GetCountFollower)
 	e.GET("/follow/count-following/:id", h.GetCountFollowing)
+	e.GET("/follow/follower/:id", h.FindFollower)
+	e.GET("/follow/following/:id", h.FindFollowing)
 }

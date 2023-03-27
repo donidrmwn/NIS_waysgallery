@@ -133,3 +133,37 @@ func (h *handlerFollow) GetCountFollowing(c echo.Context) error {
 		Data: followingCount,
 	})
 }
+
+func (h *handlerFollow) FindFollower(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+
+	follow, err := h.FollowRepository.FindFollower(ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: follow,
+	})
+}
+
+func (h *handlerFollow) FindFollowing(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+
+	follow, err := h.FollowRepository.FindFollowing(ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: follow,
+	})
+}
