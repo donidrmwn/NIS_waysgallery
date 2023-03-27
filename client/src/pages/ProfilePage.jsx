@@ -61,13 +61,27 @@ export default function ProfilePage() {
 
     let { data: postCount, refetch: refetchPostCount } = useQuery("postCountCache", async () => {
         const response = await API.get("/post/count/" + id);
-        console.log("post count", response)
+      
+        return response.data.data;
+    })
+
+    let { data: followingCount, refetch: refetchFollowing } = useQuery("followingCache", async () => {
+        const response = await API.get("/follow/count-following/" + id);
+   
+        return response.data.data;
+    })
+
+    let { data: followerCount, refetch: refetchFollower } = useQuery("followerCache", async () => {
+        const response = await API.get("/follow/count-follower/" + id);
+   
         return response.data.data;
     })
     useEffect(() => {
         refetchProfile()
         refetchPostProfile()
         refetchPostCount()
+        refetchFollowing()
+        refetchFollower()
         console.log("post profile", postProfile)
     }, [id])
 
@@ -80,6 +94,7 @@ export default function ProfilePage() {
                 '/follow/' + id
             )
             refetchFollow()
+            refetchFollower()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -96,6 +111,7 @@ export default function ProfilePage() {
                 '/follow/' + id
             )
             refetchFollow()
+            refetchFollower()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -113,9 +129,17 @@ export default function ProfilePage() {
                         <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
                         <h5 className="fw-bold mb-4">{profile?.name}</h5>
                         <Row>
-                            <Col md="1" className="d-grid justify-content-center">
+                            <Col md="2" className="d-grid justify-content-center">
                                 <h5 className="mb-1 m-auto">{postCount}</h5>
                                 <h5 className="mb-2 d-flex m-auto">Posts</h5>
+                            </Col>
+                            <Col md="2" className="d-grid justify-content-center">
+                                <h5 className="mb-1 m-auto">{followerCount}</h5>
+                                <h5 className="mb-2 d-flex m-auto">Follower</h5>
+                            </Col>
+                            <Col md="2" className="d-grid justify-content-center">
+                                <h5 className="mb-1 m-auto">{followingCount}</h5>
+                                <h5 className="mb-2 d-flex m-auto">Following</h5>
                             </Col>
                         </Row>
                         <h1 className="fw-bold">{profile?.greeting}</h1>

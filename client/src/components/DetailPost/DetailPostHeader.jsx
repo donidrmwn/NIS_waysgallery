@@ -37,6 +37,18 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
         return response.data.data;
     })
 
+    let { data: followingCount, refetch: refetchFollowing } = useQuery("followingCache", async () => {
+        const response = await API.get("/follow/count-following/" + userID);
+
+        return response.data.data;
+    })
+
+    let { data: followerCount, refetch: refetchFollower } = useQuery("followerCache", async () => {
+        const response = await API.get("/follow/count-follower/" + userID);
+
+        return response.data.data;
+    })
+
 
     const handleFollow = useMutation(async (e) => {
         try {
@@ -46,6 +58,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                 '/follow/' + userID
             )
             refetch()
+            refetchFollower()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -62,6 +75,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                 '/follow/' + userID
             )
             refetch()
+            refetchFollower()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -86,11 +100,11 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                                 <p className="mb-2 d-flex m-auto">Posts</p>
                             </Col>
                             <Col className="d-grid justify-content-center">
-                                <p className="mb-1 m-auto">{postCount}</p>
+                                <p className="mb-1 m-auto">{followerCount}</p>
                                 <p className="mb-2 d-flex m-auto">Follower</p>
                             </Col>
                             <Col className="d-grid justify-content-center">
-                                <p className="mb-1 m-auto">{postCount}</p>
+                                <p className="mb-1 m-auto">{followingCount}</p>
                                 <p className="mb-2 d-flex m-auto">Following</p>
                             </Col>
                         </Row>
