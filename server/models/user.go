@@ -21,15 +21,6 @@ type UserResponse struct {
 	Email string `json:"email"`
 }
 
-type UserProfile struct {
-	ID      int             `json:"-"`
-	Profile ProfileResponse `json:"profile"`
-}
-
 func (UserResponse) TableName() string {
-	return "users"
-}
-
-func (UserProfile) TableName() string {
 	return "users"
 }
