@@ -67,6 +67,7 @@ export default function ProfilePage() {
     useEffect(() => {
         refetchProfile()
         refetchPostProfile()
+        refetchPostCount()
         console.log("post profile", postProfile)
     }, [id])
 
