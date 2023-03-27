@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Gallery from "../utils/Gallery";
+import ModalListUserFollow from "../components/Modals/ModalListUserFollow";
 
 
 export default function ProfilePage() {
@@ -33,9 +34,15 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     let { id } = useParams();
     let endPoint = "/profile/user/" + id
-
+    const [showModalListUser, setShowModalListUser] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [statusModalFollow, setStatusModalFollow] = useState("")
 
+    const handleShowModalListUser = (status) => {
+        setShowModalListUser(true)
+        setStatusModalFollow(status)
+    }
+    const handleCloseModalListUser = () => setShowModalListUser(false)
 
     let { data: profile, refetch: refetchProfile } = useQuery("profile", async () => {
         const response = await API.get(endPoint);
@@ -51,6 +58,15 @@ export default function ProfilePage() {
         return response.data.data;
     })
 
+    let { data: following, refetch: refetchFollowingProfile } = useQuery("followingSearch", async () => {
+        const response = await API.get("/follow/following/" + id)
+        return response.data
+    })
+
+    let { data: follower, refetch: refetchFollowerProfile } = useQuery("followerSearch", async () => {
+        const response = await API.get("/follow/follower/" + id)
+        return response.data
+    })
 
 
     let { data: postProfile, refetch: refetchPostProfile } = useQuery("postProfileCache", async () => {
@@ -61,19 +77,19 @@ export default function ProfilePage() {
 
     let { data: postCount, refetch: refetchPostCount } = useQuery("postCountCache", async () => {
         const response = await API.get("/post/count/" + id);
-      
+
         return response.data.data;
     })
 
     let { data: followingCount, refetch: refetchFollowing } = useQuery("followingCache", async () => {
         const response = await API.get("/follow/count-following/" + id);
-   
+
         return response.data.data;
     })
 
     let { data: followerCount, refetch: refetchFollower } = useQuery("followerCache", async () => {
         const response = await API.get("/follow/count-follower/" + id);
-   
+
         return response.data.data;
     })
     useEffect(() => {
@@ -82,6 +98,8 @@ export default function ProfilePage() {
         refetchPostCount()
         refetchFollowing()
         refetchFollower()
+        refetchFollowerProfile()
+        refetchFollowingProfile()
         console.log("post profile", postProfile)
     }, [id])
 
@@ -129,15 +147,15 @@ export default function ProfilePage() {
                         <Image style={style.roundedImage} className="m-auto me-4 mb-3" src={`${profile?.profile_picture}`} />
                         <h5 className="fw-bold mb-4">{profile?.name}</h5>
                         <Row>
-                            <Col md="2" className="d-grid justify-content-center">
+                            <Col  style={{ cursor: "pointer" }} md="2" className="d-grid justify-content-center">
                                 <h5 className="mb-1 m-auto">{postCount}</h5>
                                 <h5 className="mb-2 d-flex m-auto">Posts</h5>
                             </Col>
-                            <Col md="2" className="d-grid justify-content-center">
+                            <Col onClick={() => { handleShowModalListUser("follower")}} style={{ cursor: "pointer" }} md="2" className="d-grid justify-content-center">
                                 <h5 className="mb-1 m-auto">{followerCount}</h5>
                                 <h5 className="mb-2 d-flex m-auto">Follower</h5>
                             </Col>
-                            <Col md="2" className="d-grid justify-content-center">
+                            <Col onClick={() => { handleShowModalListUser("following")}} style={{ cursor: "pointer" }} md="2" className="d-grid justify-content-center">
                                 <h5 className="mb-1 m-auto">{followingCount}</h5>
                                 <h5 className="mb-2 d-flex m-auto">Following</h5>
                             </Col>
@@ -190,6 +208,14 @@ export default function ProfilePage() {
 
                 </Row>
             </Container>
+
+            <ModalListUserFollow
+                show={showModalListUser}
+                onHide={handleCloseModalListUser}
+                statusModalFollow={statusModalFollow}
+                follower={follower}
+                following={following}
+            />
         </>
     )
 }

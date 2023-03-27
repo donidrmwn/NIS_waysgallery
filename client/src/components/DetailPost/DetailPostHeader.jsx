@@ -6,6 +6,7 @@ import { API } from "../../config/api";
 import { UserContext } from "../../context/userContext";
 import { ConvertFormatDate } from "../../utils/ConvertFormatDate";
 import LoadingSpinner from "../LoadingSpinner";
+import ModalListUserFollow from "../Modals/ModalListUserFollow";
 export default function DetailPostHeader({ user, title, postID, postDate }) {
     const style = {
 
@@ -21,6 +22,16 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
     const userID = user?.id
     const navigate = useNavigate()
     const profile = user?.profile
+
+    let { data: following, refetch: refetchFollowingProfile } = useQuery("followingSearch", async () => {
+        const response = await API.get("/follow/following/" + userID)
+        return response.data
+    })
+
+    let { data: follower, refetch: refetchFollowerProfile } = useQuery("followerSearch", async () => {
+        const response = await API.get("/follow/follower/" + userID)
+        return response.data
+    })
 
     let { data: follow, refetch } = useQuery("followCache", async () => {
         let response
@@ -59,6 +70,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
             )
             refetch()
             refetchFollower()
+            refetchFollowerProfile()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -76,6 +88,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
             )
             refetch()
             refetchFollower()
+            refetchFollowerProfile()
             setIsLoading(false)
             console.log(response)
         } catch (error) {
@@ -84,6 +97,19 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
         }
     })
 
+    const [statusModalFollow, setStatusModalFollow] = useState("")
+    const [showModalListUser, setShowModalListUser] = useState(false)
+    const handleShowModalListUser = (status) => {
+        if (followerCount == 0 && status == "follower") {
+            return
+        }
+        if (followingCount == 0 && status == "following") {
+            return
+        }
+        setShowModalListUser(true)
+        setStatusModalFollow(status)
+    }
+    const handleCloseModalListUser = () => setShowModalListUser(false)
 
     return (
         <>
@@ -99,11 +125,11 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                                 <p className="mb-1 m-auto">{postCount}</p>
                                 <p className="mb-2 d-flex m-auto">Posts</p>
                             </Col>
-                            <Col className="d-grid justify-content-center">
+                            <Col style={{ cursor: "pointer" }} onClick={() => { handleShowModalListUser("follower") }} className="d-grid justify-content-center">
                                 <p className="mb-1 m-auto">{followerCount}</p>
                                 <p className="mb-2 d-flex m-auto">Follower</p>
                             </Col>
-                            <Col className="d-grid justify-content-center">
+                            <Col style={{ cursor: "pointer" }} onClick={() => { handleShowModalListUser("following") }} className="d-grid justify-content-center">
                                 <p className="mb-1 m-auto">{followingCount}</p>
                                 <p className="mb-2 d-flex m-auto">Following</p>
                             </Col>
@@ -135,6 +161,14 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
 
                 </Col>
             </Row>
+
+            <ModalListUserFollow
+                show={showModalListUser}
+                onHide={handleCloseModalListUser}
+                statusModalFollow={statusModalFollow}
+                follower={follower}
+                following={following}
+            />
         </>
     )
 }
