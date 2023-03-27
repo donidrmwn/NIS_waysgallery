@@ -18,6 +18,7 @@ type PostRepository interface {
 	GetPostAuth(postID int, userID int) (models.Post, error)
 	FindUserPostsFollowed(userID int, limit int) ([]models.Post, error)
 	SearchPost(postName string) ([]models.Post, error)
+	GetPostCount(userID int) (int64, error)
 }
 
 func RepositoryPost(db *gorm.DB) *repository {
@@ -82,4 +83,11 @@ func (r *repository) GetPostAuth(postID int, userID int) (models.Post, error) {
 	var post models.Post
 	err := r.db.Preload("Photo").First(&post, "id = ? and user_id = ?", postID, userID).Error
 	return post, err
+}
+
+func (r *repository) GetPostCount(userID int) (int64, error) {
+	var countPost int64
+	var post models.Post
+	err := r.db.Model(&post).Where("user_id = ?", userID).Count(&countPost).Error
+	return countPost, err
 }
