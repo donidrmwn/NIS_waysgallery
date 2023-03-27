@@ -120,7 +120,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                         <p className="m-auto fw-bold">{title}</p>
                         <p className="m-auto" onClick={() => navigate("/profile/" + userID)} style={{ cursor: "pointer" }}>{profile?.name}</p>
                         <p className="m-auto">{ConvertFormatDate(postDate)}</p>
-                        <Row className="">
+                        <Row className="mt-3">
                             <Col className="d-grid justify-content-center">
                                 <p className="mb-1 m-auto">{postCount}</p>
                                 <p className="mb-2 d-flex m-auto">Posts</p>
