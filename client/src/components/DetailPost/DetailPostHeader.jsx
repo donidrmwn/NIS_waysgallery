@@ -31,6 +31,11 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
         return response.data.data;
     })
 
+    let { data: postCount, refetch: refetchPostCount } = useQuery("postCountCache", async () => {
+        const response = await API.get("/post/count/" + userID);
+        console.log("post count", response)
+        return response.data.data;
+    })
 
 
     const handleFollow = useMutation(async (e) => {
@@ -75,6 +80,20 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
                         <p className="m-auto fw-bold">{title}</p>
                         <p className="m-auto" onClick={() => navigate("/profile/" + userID)} style={{ cursor: "pointer" }}>{profile?.name}</p>
                         <p className="m-auto">{ConvertFormatDate(postDate)}</p>
+                        <Row className="">
+                            <Col className="d-grid justify-content-center">
+                                <p className="mb-1 m-auto">{postCount}</p>
+                                <p className="mb-2 d-flex m-auto">Posts</p>
+                            </Col>
+                            <Col className="d-grid justify-content-center">
+                                <p className="mb-1 m-auto">{postCount}</p>
+                                <p className="mb-2 d-flex m-auto">Follower</p>
+                            </Col>
+                            <Col className="d-grid justify-content-center">
+                                <p className="mb-1 m-auto">{postCount}</p>
+                                <p className="mb-2 d-flex m-auto">Following</p>
+                            </Col>
+                        </Row>
                     </Col>
                 </Col>
                 <Col className="d-flex gap-4 justify-content-end">

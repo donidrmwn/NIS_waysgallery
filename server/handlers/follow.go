@@ -101,3 +101,35 @@ func convertResponseFollow(u models.Follow) followdto.FollowResponse {
 		FollowedUser: u.FollowerUser,
 	}
 }
+
+func (h *handlerFollow) GetCountFollower(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	followerCount, err := h.FollowRepository.GetCountFollower(ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: followerCount,
+	})
+}
+
+func (h *handlerFollow) GetCountFollowing(c echo.Context) error {
+	id := c.Param("id")
+	ID, _ := strconv.Atoi(id)
+	followingCount, err := h.FollowRepository.GetCountFollowing(ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: followingCount,
+	})
+}
