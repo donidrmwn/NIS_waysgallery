@@ -38,13 +38,14 @@ func (r *repository) GetFollow(followerID int, followedID int) (models.Follow, e
 
 func (r *repository) FindFollower(userID int) ([]models.Follow, error) {
 	var follow []models.Follow
-	err := r.db.Preload("FollowerUser.Profile").Find(&follow, "followed_id = ?", userID).Error
+	err := r.db.Preload("FollowedUser.Profile").Find(&follow, "followed_id = ?", userID).Error
 	return follow, err
 }
 
 func (r *repository) FindFollowing(userID int) ([]models.Follow, error) {
 	var follow []models.Follow
-	err := r.db.Preload("FollowedUser.Profile").Find(&follow, "follower_id = ?", userID).Error
+	//dapetin follower
+	err := r.db.Preload("FollowingUser.Profile").Find(&follow, "follower_id = ?", userID).Error
 	return follow, err
 }
 
