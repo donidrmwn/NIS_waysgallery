@@ -31,6 +31,12 @@ export default function ProjectDetail() {
         //   refetchInterval: ,
         // } 
     )
+
+    function openImage() {
+        projectDetail.forEach(element => {
+            console.log("element", element)
+        });
+    }
     const handleStatus = useMutation(async (status) => {
         try {
             console.log(status)
@@ -44,7 +50,8 @@ export default function ProjectDetail() {
                 status: status
             }
             const body = JSON.stringify(data)
-            const response = await API.patch("/order/my-order/" + projectDetail?.id, body, config);
+            //const response = await API.patch("/order/my-order/" + projectDetail?.id, body, config);
+
             refetch()
             setIsLoading(false)
             navigate("/order")
@@ -88,7 +95,7 @@ export default function ProjectDetail() {
                             <p className='m-0 mb-5' style={{ height: "500px", overflow: "auto" }}>
                                 {projectDetail?.description_project}
                             </p>
-                            <Button onClick={() => handleStatus.mutate("success")} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
+                            <Button onClick={() => {handleStatus.mutate("success");openImage()}} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
                         </Col>
                     </Row>
 
