@@ -8,13 +8,13 @@ import (
 
 type Follow struct {
 	gorm.Model
-	ID           int          `json:"id" gorm:"primary_key:auto_increment"`
-	FollowerID   int          `json:"follower_id" gorm:"type: int" form:"follower_id"`
-	FollowerUser User         `json:"-"  gorm:"foreignKey:FollowerID"`
-	FollowedID   int          `json:"followed_id" gorm:"type: int" form:"followed_id"`
-	FollowedUser UserResponse `json:"followed_user" gorm:"foreignKey:FollowedID"`
-	CreatedAt    time.Time    `json:"-"`
-	UpdatedAt    time.Time    `json:"-"`
+	ID           int       `json:"id" gorm:"primary_key:auto_increment"`
+	FollowerID   int       `json:"follower_id" gorm:"type: int" form:"follower_id"`
+	FollowerUser User      `json:"-"  gorm:"foreignKey:FollowerID"`
+	FollowedID   int       `json:"followed_id" gorm:"type: int" form:"followed_id"`
+	FollowedUser User      `json:"followed_user" gorm:"foreignKey:FollowedID"`
+	CreatedAt    time.Time `json:"-"`
+	UpdatedAt    time.Time `json:"-"`
 }
 
 type FollowResponse struct {
