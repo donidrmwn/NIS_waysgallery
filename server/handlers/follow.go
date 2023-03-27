@@ -90,16 +90,9 @@ func (h *handlerFollow) DeleteFollow(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: convertResponseFollow(data),
+		Data: data,
 	})
 
-}
-
-func convertResponseFollow(u models.Follow) followdto.FollowResponse {
-	return followdto.FollowResponse{
-		ID:           u.ID,
-		FollowedUser: u.FollowerUser,
-	}
 }
 
 func (h *handlerFollow) GetCountFollower(c echo.Context) error {
