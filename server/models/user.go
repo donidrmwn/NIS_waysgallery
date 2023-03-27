@@ -29,3 +29,7 @@ type UserProfile struct {
 func (UserResponse) TableName() string {
 	return "users"
 }
+
+func (UserProfile) TableName() string {
+	return "users"
+}
