@@ -60,8 +60,8 @@ export default function ProfilePage() {
     })
 
     let { data: postCount, refetch: refetchPostCount } = useQuery("postCountCache", async () => {
-        const response = await API.get("/post/count");
-        console.log("post count",response)
+        const response = await API.get("/post/count/" + id);
+        console.log("post count", response)
         return response.data.data;
     })
     useEffect(() => {
@@ -113,8 +113,8 @@ export default function ProfilePage() {
                         <h5 className="fw-bold mb-4">{profile?.name}</h5>
                         <Row>
                             <Col md="1" className="d-grid justify-content-center">
+                                <h5 className="mb-1 m-auto">{postCount}</h5>
                                 <h5 className="mb-2 d-flex m-auto">Posts</h5>
-                                <h5 className="mb-3 m-auto">{postCount}</h5>
                             </Col>
                         </Row>
                         <h1 className="fw-bold">{profile?.greeting}</h1>
