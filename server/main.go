@@ -25,12 +25,12 @@ func main() {
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"https://nis-waysgallery.vercel.app"},
-		AllowMethods: []string{echo.GET, echo.PATCH, echo.DELETE},
+		AllowMethods: []string{echo.GET, echo.POST, echo.PATCH, echo.DELETE},
 		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
 	}))
 
 	routes.RouteInit(e.Group("/api/v1"))
-	e.Static("/uploads", "./uploads")
+	// e.Static("/uploads", "./uploads")
 
 	fmt.Println("server running localhost:5000")
 	e.Logger.Fatal(e.Start(":" + port))
