@@ -31,13 +31,14 @@ export default function HomePage() {
         setSearchPostName("")
         setTitleDropDown("Today")
         setEndPoint("/post/today?limit=" + 10)
-
     }
+
     const handleShowAll = () => {
         setSearchPostName("")
         setTitleDropDown("Show All")
         setEndPoint("/post/all?limit=" + 10)
     }
+    
     const handleFollowed = () => {
         setSearchPostName("")
         setTitleDropDown("Followed")

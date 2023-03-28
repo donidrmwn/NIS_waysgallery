@@ -78,6 +78,7 @@ func (h *handlerPost) UpdatePost(c echo.Context) error {
 	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
+		
 		photo, _ := h.PhotoRepository.GetPhoto(idx, ID)
 		if data == "main_image" && image == "" {
 			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
