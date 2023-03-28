@@ -24,7 +24,7 @@ func main() {
 	database.RunMigration()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://nis-waysgallery.vercel.app"},
+		AllowOrigins: []string{"https://nis-waysgalleryyy.vercel.app"},
 		AllowMethods: []string{echo.GET, echo.PATCH, echo.DELETE},
 		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
 	}))
