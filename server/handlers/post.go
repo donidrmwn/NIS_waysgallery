@@ -9,7 +9,9 @@ import (
 	"time"
 	photodto "waysgallery/dto/photo"
 	postdto "waysgallery/dto/post"
+	profiledto "waysgallery/dto/profile"
 	dto "waysgallery/dto/result"
+	userdto "waysgallery/dto/user"
 	"waysgallery/models"
 	"waysgallery/repositories"
 
@@ -78,7 +80,7 @@ func (h *handlerPost) UpdatePost(c echo.Context) error {
 	var arrImage = [4]string{"main_image", "image_2", "image_3", "image_4"}
 	for idx, data := range arrImage {
 		image := c.Get(data).(string)
-		
+
 		photo, _ := h.PhotoRepository.GetPhoto(idx, ID)
 		if data == "main_image" && image == "" {
 			return c.JSON(http.StatusBadRequest, dto.ErrorResult{
@@ -266,7 +268,23 @@ func (h *handlerPost) GetPost(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: post,
+		Data: convertGetPostResponse(post),
+	})
+}
+
+func (h *handlerPost) GetPosttest(c echo.Context) error {
+	id := c.Param("id")
+	post_id, _ := strconv.Atoi(id)
+	post, err := h.PostRepository.GetPost(post_id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: convertGetPostResponse(post),
 	})
 }
 
@@ -285,3 +303,37 @@ func (h *handlerPost) GetPostCount(c echo.Context) error {
 		Data: postCount,
 	})
 }
+
+func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
+	return postdto.PostResponseByID{
+		ID:          p.ID,
+		Title:       p.Title,
+		Description: p.Description,
+		Photo:       p.Photo,
+		User: userdto.UserPostResponse{
+			Email: p.User.Email,
+			Profile: profiledto.ProfileResponsePost{
+				Name:           p.User.Profile.Name,
+				ProfilePicture: p.User.Profile.ProfilePicture,
+			},
+		},
+	}
+
+}
+
+// func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
+// 	return postdto.PostResponseByID{
+// 		ID:          p.ID,
+// 		Title:       p.Title,
+// 		Description: p.Description,
+// 		Photo:       p.Photo,
+// 		User: userdto.UserPostResponse{
+// 			Email: p.User.Email,
+// 		},
+// 		Profile: profiledto.ProfileResponsePost{
+// 			Name:           p.User.Profile.Name,
+// 			ProfilePicture: p.User.Profile.ProfilePicture,
+// 		},
+// 	}
+
+// }

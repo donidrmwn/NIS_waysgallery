@@ -10,3 +10,8 @@ type ProfileResponse struct {
 	User           models.UserResponse `json:"user" gorm:"foreignKey:UserID"`
 	UserID         int                 `json:"user_id" gorm:"type: integer"`
 }
+
+type ProfileResponsePost struct {
+	Name           string `json:"name"`
+	ProfilePicture string `json:"profile_picture"`
+}
