@@ -16,7 +16,7 @@ export default function ProjectDetail() {
     const [isLoading, setIsLoading] = useState(true)
     let { data: projectDetail } = useQuery("projectDetailCache", async () => {
         const response = await API.get("/order/finished-project/" + id);
-        console.log(response)
+     
         setIsLoading(false)
 
         return response.data.data;
