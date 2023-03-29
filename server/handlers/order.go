@@ -307,6 +307,7 @@ func convertOrderResponse(o []models.Order) []orderdto.OrderResponse {
 			StartDate: data.StartDate,
 			EndDate:   data.EndDate,
 			Price:     data.Price,
+			Status:    data.Status,
 		})
 	}
 	return orderResponse
@@ -328,6 +329,7 @@ func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
 			StartDate: data.StartDate,
 			EndDate:   data.EndDate,
 			Price:     data.Price,
+			Status:    data.Status,
 		})
 	}
 	return offerResponse
