@@ -144,7 +144,7 @@ export default function HomePage() {
                         {!searchPostName ?
                             <>
                                 {!posts.data ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
-                                    : <>
+                                    : <div>
                                         <Gallery data={posts} />
                                         <div className='m-auto d-flex justify-content-center align-items-center'>
                                             <Button
@@ -154,7 +154,7 @@ export default function HomePage() {
                                                 Show More
                                             </Button>
                                         </div>
-                                    </>
+                                    </div>
                                 }
                             </>
                             :
