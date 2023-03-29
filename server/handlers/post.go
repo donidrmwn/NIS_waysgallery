@@ -120,7 +120,7 @@ func (h *handlerPost) SearchPost(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: posts,
+		Data: convertGetPostResponseAll(posts),
 	})
 }
 
@@ -219,7 +219,7 @@ func (h *handlerPost) FindUserPostsFollowed(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: posts,
+		Data: convertGetPostResponseAll(posts),
 	})
 }
 
@@ -237,7 +237,7 @@ func (h *handlerPost) FindTodayPosts(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: posts,
+		Data: convertGetPostResponseAll(posts),
 	})
 }
 func (h *handlerPost) FindUserPosts(c echo.Context) error {
@@ -252,7 +252,7 @@ func (h *handlerPost) FindUserPosts(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: posts,
+		Data: convertGetPostResponseAll(posts),
 	})
 }
 
@@ -334,7 +334,6 @@ func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
 			},
 		},
 	}
-
 }
 
 // func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
