@@ -219,7 +219,7 @@ func (h *handlerPost) FindUserPostsFollowed(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: convertGetPostResponseAll(posts),
+		Data: posts,
 	})
 }
 
