@@ -9,7 +9,6 @@ import LoadingSpinner from "../LoadingSpinner";
 import ModalListUserFollow from "../Modals/ModalListUserFollow";
 export default function DetailPostHeader({ user, title, postID, postDate }) {
     const style = {
-
         roundedImage: {
             borderRadius: "100%",
             width: "60px",
@@ -17,6 +16,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
             cursor: "pointer"
         }
     }
+
     const [isLoading, setIsLoading] = useState(false)
     const [state] = useContext(UserContext)
     const userID = user?.id
@@ -44,7 +44,7 @@ export default function DetailPostHeader({ user, title, postID, postDate }) {
 
     let { data: postCount, refetch: refetchPostCount } = useQuery("postCountCache", async () => {
         const response = await API.get("/post/count/" + userID);
-        console.log("post count", response)
+       
         return response.data.data;
     })
 

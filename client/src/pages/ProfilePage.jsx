@@ -71,7 +71,6 @@ export default function ProfilePage() {
 
     let { data: postProfile, refetch: refetchPostProfile } = useQuery("postProfileCache", async () => {
         const response = await API.get("/post/user/" + id);
-        console.log(response)
         return response.data;
     })
 
@@ -100,7 +99,7 @@ export default function ProfilePage() {
         refetchFollower()
         refetchFollowerProfile()
         refetchFollowingProfile()
-        console.log("post profile", postProfile)
+       
     }, [id])
 
 
@@ -114,7 +113,7 @@ export default function ProfilePage() {
             refetchFollow()
             refetchFollower()
             setIsLoading(false)
-            console.log(response)
+            
         } catch (error) {
             setIsLoading(false)
             console.log(error)
