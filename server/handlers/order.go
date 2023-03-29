@@ -283,10 +283,9 @@ func (h *handlerOrder) GetFinishedProject(c echo.Context) error {
 			Message: err.Error(),
 		})
 	}
-
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: order,
+		Data: convertProjectResponse(order),
 	})
 
 }
@@ -337,4 +336,12 @@ func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
 		})
 	}
 	return offerResponse
+}
+
+func convertProjectResponse(p models.Order) orderdto.ProjectResponse {
+	return orderdto.ProjectResponse{
+		ID:                 p.ID,
+		DescriptionProject: p.DescriptionProject,
+		PhotoProject:       p.PhotoProject,
+	}
 }

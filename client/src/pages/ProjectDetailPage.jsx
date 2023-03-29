@@ -16,7 +16,7 @@ export default function ProjectDetail() {
     const [isLoading, setIsLoading] = useState(true)
     let { data: projectDetail } = useQuery("projectDetailCache", async () => {
         const response = await API.get("/order/finished-project/" + id);
-      
+        console.log(response)
         setIsLoading(false)
 
         return response.data.data;
@@ -33,18 +33,19 @@ export default function ProjectDetail() {
     )
 
     function openImage() {
-  
+
         let alink = document.createElement('a');
         projectDetail?.photo_projects?.map((element, index) => {
-            alink.href = element.photo_project;
-            alink.target = "_blank"
-            alink.download = 'Image' + index;
-            alink.click();
+            if (element.photo_project) {
+                alink.href = element.photo_project;
+                alink.target = "_blank"
+                alink.click();
+            }
         });
     }
     const handleStatus = useMutation(async (status) => {
         try {
-        
+
             setIsLoading(true)
             const config = {
                 headers: {
@@ -68,6 +69,7 @@ export default function ProjectDetail() {
 
     return (
         <>
+
             {isLoading ?
                 <div className='m-auto d-flex justify-content-center align-items-center vh-100'>
                     <LoadingSpinner />
@@ -100,7 +102,12 @@ export default function ProjectDetail() {
                             <p className='m-0 mb-5' style={{ height: "500px", overflow: "auto" }}>
                                 {projectDetail?.description_project}
                             </p>
-                            <Button onClick={() => { handleStatus.mutate("success"); openImage() }} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
+                            {projectDetail?.status == "success" ?
+                                <Button onClick={() => { openImage() }} className='fw-bold ' style={{ width: "200px", backgroundColor: "#2FC4B2", border: "none" }}>Download Project</Button>
+                                :
+                                <Button onClick={() => { handleStatus.mutate("success"); openImage() }} className='fw-bold ' style={{ width: "150px", backgroundColor: "#2FC4B2", border: "none" }}>Accept Project</Button>
+                            }   
+
                         </Col>
                     </Row>
 

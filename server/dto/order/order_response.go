@@ -33,3 +33,9 @@ type OfferResponse struct {
 	DescriptionProject string                      `json:"description_project"`
 	PhotoProject       []models.PhotoProject       `json:"photo_projects"`
 }
+
+type ProjectResponse struct {
+	ID                 int                   `json:"id"`
+	DescriptionProject string                `json:"description_project"`
+	PhotoProject       []models.PhotoProject `json:"photo_projects"`
+}

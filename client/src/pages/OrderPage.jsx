@@ -221,12 +221,12 @@ export default function OrderPage() {
                 getStatus={getStatus}
                 titleDropDown={titleDropDown}
                 refetch={refetch}
+                openDetailProject={handleShowModalViewProject}
             />
             <ModalViewProject
                 orderDetail={orderDetail}
                 show={showModalViewProject}
                 onHide={handleCloseModalViewProject}
-
             />
         </>
     )
