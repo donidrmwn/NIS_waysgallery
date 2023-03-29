@@ -1,6 +1,7 @@
 package postdto
 
 import (
+	"time"
 	userdto "waysgallery/dto/user"
 	"waysgallery/models"
 )
@@ -18,4 +19,5 @@ type PostResponseByID struct {
 	Description string                   `gorm:"type: varchar(255)" json:"description"`
 	Photo       []models.PhotoResponse   `json:"photos"`
 	User        userdto.UserPostResponse `json:"user"`
+	CreatedAt   time.Time                `json:"created_at"`
 }

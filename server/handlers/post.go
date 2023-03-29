@@ -310,6 +310,7 @@ func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
 		Title:       p.Title,
 		Description: p.Description,
 		Photo:       p.Photo,
+		CreatedAt:   p.CreatedAt,
 		User: userdto.UserPostResponse{
 			Email: p.User.Email,
 			Profile: profiledto.ProfileResponsePost{
