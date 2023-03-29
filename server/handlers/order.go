@@ -322,8 +322,8 @@ func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
 			ClientUser: userdto.UserProfileResponse{
 				Email: data.ClientUser.Email,
 				Profile: profiledto.ProfileResponsePost{
-					Name:           data.VendorUser.Profile.Name,
-					ProfilePicture: data.VendorUser.Profile.ProfilePicture,
+					Name:           data.ClientUser.Profile.Name,
+					ProfilePicture: data.ClientUser.Profile.ProfilePicture,
 				},
 			},
 			StartDate: data.StartDate,
