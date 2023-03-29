@@ -143,7 +143,7 @@ export default function HomePage() {
                     <>
                         {!searchPostName ?
                             <>
-                                {posts.data ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                                {!posts.data ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
                                     : <>
                                         <Gallery data={posts} />
                                         <div className='m-auto d-flex justify-content-center align-items-center'>
