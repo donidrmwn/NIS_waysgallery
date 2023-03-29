@@ -52,7 +52,6 @@ export default function HomePage() {
 
     useEffect(() => {
         if (titleDropDown == "Show All") {
-
             setEndPoint("/post/all?limit=" + showLimit)
         } else if (titleDropDown == "Today") {
             setEndPoint("/post/today?limit=" + showLimit)
@@ -70,8 +69,13 @@ export default function HomePage() {
             console.log(searchPostName)
         } 
         else {
-            console.log(searchPostName)
-            setEndPoint("/post/today?limit=" + 10)
+            if (titleDropDown == "Show All") {
+                setEndPoint("/post/all?limit=" + 10)
+            } else if (titleDropDown == "Today") {
+                setEndPoint("/post/today?limit=" + 10)
+            } else if (titleDropDown == "Followed") {
+                setEndPoint("/post/followed?limit=" + 10)
+            }
         }
     }, [searchPostName])
 
