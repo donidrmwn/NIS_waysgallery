@@ -116,6 +116,7 @@ export default function HomePage() {
                                     onChange={(e) => { setSearchPostName(e.target.value) }}
                                     type='text'
                                     placeholder='Search'
+                                    autoComplete='false'
                                 />
                             </Form.Label>
                         </Form>
