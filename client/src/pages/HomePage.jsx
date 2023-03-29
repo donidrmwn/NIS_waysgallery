@@ -91,7 +91,7 @@ export default function HomePage() {
                 }`}
             </style>
 
-            <Container className='vh-100'>
+            <Container>
                 <Row className='d-flex'>
                     <Col>
                         <DropdownButton variant="flat" id="dropdown-basic-button" title={titleDropDown}>
@@ -122,7 +122,6 @@ export default function HomePage() {
                     </Col>
                 </Row>
                 <h3 className='my-5'>
-
                     {
                         searchPostName ?
                             <p>Search</p> :
@@ -136,17 +135,20 @@ export default function HomePage() {
                     }
                 </h3>
                 {isLoading ?
-                    <div className='m-auto d-flex justify-content-center align-items-center vh-100'>
+                    <div className='m-auto d-flex justify-content-center align-items-center'>
                         <LoadingSpinner />
                     </div>
                     :
                     <>
                         {!searchPostName ?
                             <>
-                                {!posts.data ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
-                                    : <div>
+                                {!posts.data ?
+                                    <Container>
+                                        <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
+                                    </Container>
+                                    : <Container className='m-auto d-grid justify-content-center align-items-center'>
                                         <Gallery data={posts} />
-                                        <div className='m-auto d-flex justify-content-center align-items-center'>
+                                        <div className='d-flex justify-content-center'>
                                             <Button
                                                 style={{ backgroundColor: "#2FC4B2", border: "none", zIndex: 1 }}
                                                 onClick={() => setShowLimit(showLimit + 10)}
@@ -154,7 +156,7 @@ export default function HomePage() {
                                                 Show More
                                             </Button>
                                         </div>
-                                    </div>
+                                    </Container>
                                 }
                             </>
                             :

@@ -35,4 +35,5 @@ func main() {
 
 	fmt.Println("server running localhost:5000")
 	e.Logger.Fatal(e.Start(":" + port))
+	// e.Logger.Fatal(e.Start("localhost:" + port))
 }

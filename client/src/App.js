@@ -85,7 +85,6 @@ function App() {
             </Route>
           </Routes>
         </Container>
-
       }
     </>
   );

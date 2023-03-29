@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 	followdto "waysgallery/dto/follow"
+	profiledto "waysgallery/dto/profile"
 	dto "waysgallery/dto/result"
+	userdto "waysgallery/dto/user"
 	"waysgallery/models"
 	"waysgallery/repositories"
 
@@ -140,7 +142,7 @@ func (h *handlerFollow) FindFollower(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: follow,
+		Data: convertFindFollowerResponse(follow),
 	})
 }
 
@@ -157,6 +159,40 @@ func (h *handlerFollow) FindFollowing(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: follow,
+		Data: convertFindFollowedResponse(follow),
 	})
+}
+
+func convertFindFollowerResponse(f []models.Follow) []followdto.FollowerResponse {
+	var followerResponses []followdto.FollowerResponse
+	for _, data := range f {
+		followerResponses = append(followerResponses, followdto.FollowerResponse{
+			FollowerID: data.FollowerID,
+			FollowerUser: userdto.UserProfileResponse{
+				Email: data.FollowerUser.Email,
+				Profile: profiledto.ProfileResponsePost{
+					Name:           data.FollowerUser.Profile.Name,
+					ProfilePicture: data.FollowerUser.Profile.ProfilePicture,
+				},
+			},
+		})
+	}
+	return followerResponses
+}
+
+func convertFindFollowedResponse(f []models.Follow) []followdto.FollowedResponse {
+	var followedResponses []followdto.FollowedResponse
+	for _, data := range f {
+		followedResponses = append(followedResponses, followdto.FollowedResponse{
+			FollowedID: data.FollowedID,
+			FollowedUser: userdto.UserProfileResponse{
+				Email: data.FollowedUser.Email,
+				Profile: profiledto.ProfileResponsePost{
+					Name:           data.FollowedUser.Profile.Name,
+					ProfilePicture: data.FollowedUser.Profile.ProfilePicture,
+				},
+			},
+		})
+	}
+	return followedResponses
 }

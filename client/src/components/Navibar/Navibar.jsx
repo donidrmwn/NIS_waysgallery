@@ -9,16 +9,16 @@ export default function Navibar({state}) {
 
     return (
         <>
-            <Navbar  className="mb-3 px-5">
+            <Navbar className="mb-3 px-5">
                 <Container fluid>
                     <Nav>
                         <Navbar.Brand as={Link} to={"/home"}>
                             <Brand />
-                            <BrandImage
+                            {/* <BrandImage
                                 top={"-10px"}
                                 width={"100px"}
                                 left={"7.5%"}
-                            />
+                            /> */}
                         </Navbar.Brand>
                     </Nav>
                     <Nav>
