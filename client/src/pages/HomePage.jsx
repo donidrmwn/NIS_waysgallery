@@ -16,6 +16,7 @@ export default function HomePage() {
     const [showLimit, setShowLimit] = useState(10)
     const [searchPostName, setSearchPostName] = useState(null)
 
+
     let { data: posts, refetch } = useQuery("postsCache", async () => {
         const response = await API.get(endPoint);
         setIsLoading(false)
@@ -38,7 +39,7 @@ export default function HomePage() {
         setTitleDropDown("Show All")
         setEndPoint("/post/all?limit=" + 10)
     }
-    
+
     const handleFollowed = () => {
         setSearchPostName("")
         setTitleDropDown("Followed")
@@ -49,7 +50,6 @@ export default function HomePage() {
         refetch()
     }, [endPoint, titleDropDown])
 
-
     useEffect(() => {
         if (titleDropDown == "Show All") {
             setEndPoint("/post/all?limit=" + showLimit)
@@ -58,16 +58,13 @@ export default function HomePage() {
         } else if (titleDropDown == "Followed") {
             setEndPoint("/post/followed?limit=" + showLimit)
         }
-
     }, [showLimit])
 
     useEffect(() => {
         if (searchPostName != "") {
-            
             setEndPoint("/post/search?post_name=" + searchPostName)
             refetchProfile()
-            console.log(searchPostName)
-        } 
+        }
         else {
             if (titleDropDown == "Show All") {
                 setEndPoint("/post/all?limit=" + 10)
@@ -144,7 +141,7 @@ export default function HomePage() {
                     </div>
                     :
                     <>
-                        {!searchPostName  ?
+                        {!searchPostName ?
                             <>
                                 {posts.data.length <= 0 ? <p>There's nothing to show. Click <span onClick={() => navigate("/upload")} className='fw-bold' style={{ cursor: "pointer" }}> here </span> to be the first one to post !</p>
                                     : <>

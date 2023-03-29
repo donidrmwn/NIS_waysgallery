@@ -19,13 +19,14 @@ func main() {
 	}
 
 	e := echo.New()
+
 	var port = os.Getenv("PORT")
 	postgres.DatabaseInit()
 	database.RunMigration()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://nis-waysgallery.vercel.app"},
-		AllowMethods: []string{"GET", "PATCH", "DELETE"},
+		AllowOrigins: []string{"https://nis-waysgalleryyy.vercel.app"},
+		AllowMethods: []string{echo.GET, echo.PATCH, echo.DELETE, echo.POST},
 		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
 	}))
 
