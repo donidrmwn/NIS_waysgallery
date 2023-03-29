@@ -305,10 +305,11 @@ func convertOrderResponse(o []models.Order) []orderdto.OrderResponse {
 					ProfilePicture: data.VendorUser.Profile.ProfilePicture,
 				},
 			},
-			StartDate: data.StartDate,
-			EndDate:   data.EndDate,
-			Price:     data.Price,
-			Status:    data.Status,
+			StartDate:    data.StartDate,
+			EndDate:      data.EndDate,
+			Price:        data.Price,
+			Status:       data.Status,
+			PhotoProject: data.PhotoProject,
 		})
 	}
 	return orderResponse
@@ -328,10 +329,11 @@ func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
 					ProfilePicture: data.ClientUser.Profile.ProfilePicture,
 				},
 			},
-			StartDate: data.StartDate,
-			EndDate:   data.EndDate,
-			Price:     data.Price,
-			Status:    data.Status,
+			StartDate:    data.StartDate,
+			EndDate:      data.EndDate,
+			Price:        data.Price,
+			Status:       data.Status,
+			PhotoProject: data.PhotoProject,
 		})
 	}
 	return offerResponse
