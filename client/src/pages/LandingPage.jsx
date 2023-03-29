@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import Brand from '../components/Brand/Brand'
 import BrandImage from '../components/Brand/BrandImage'
+import BrandLanding from '../components/Brand/BrandLanding'
 import ModalLogin from '../components/Modals/ModalLogin'
 import ModalRegister from '../components/Modals/ModalRegister'
 
@@ -59,7 +60,7 @@ export default function LandingPage() {
                 <Row fluid="true" className='w-100 d-flex p-5 align-items-center p-5' style={{ zIndex: -1 }}>
                     <Col md="5" className='d-grid justify-content-center align-items-center ps-5'>
                         <Row>
-                            <Brand fontSize={"100px"} />
+                            <BrandLanding fontSize={"100px"} />
                             <BrandImage
                                 top={"130px"}
                                 width={"300px"}
