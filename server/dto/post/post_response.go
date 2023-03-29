@@ -21,3 +21,11 @@ type PostResponseByID struct {
 	User        userdto.UserPostResponse `json:"user"`
 	CreatedAt   time.Time                `json:"created_at"`
 }
+
+type PostResponseAll struct {
+	ID          int                    `json:"id"`
+	Title       string                 `json:"title"`
+	Description string                 `json:"description"`
+	Photo       []models.PhotoResponse `json:"photos"`
+	UserID      int                    `json:"user_id"`
+}

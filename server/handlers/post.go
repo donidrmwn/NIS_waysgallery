@@ -200,7 +200,7 @@ func (h *handlerPost) FindAllPosts(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: posts,
+		Data: convertGetPostResponseAll(posts),
 	})
 }
 
@@ -302,6 +302,20 @@ func (h *handlerPost) GetPostCount(c echo.Context) error {
 		Code: http.StatusOK,
 		Data: postCount,
 	})
+}
+
+func convertGetPostResponseAll(p []models.Post) []postdto.PostResponseAll {
+	var postResponses []postdto.PostResponseAll
+	for _, data := range p {
+		postResponses = append(postResponses, postdto.PostResponseAll{
+			ID:          data.ID,
+			Title:       data.Title,
+			Description: data.Description,
+			Photo:       data.Photo,
+			UserID:      data.UserID,
+		})
+	}
+	return postResponses
 }
 
 func convertGetPostResponse(p models.Post) postdto.PostResponseByID {
