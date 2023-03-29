@@ -297,6 +297,7 @@ func convertOrderResponse(o []models.Order) []orderdto.OrderResponse {
 		orderResponse = append(orderResponse, orderdto.OrderResponse{
 			ID:       data.ID,
 			VendorID: data.VendorID,
+			Title:    data.Title,
 			VendorUser: userdto.UserProfileResponse{
 				Email: data.VendorUser.Email,
 				Profile: profiledto.ProfileResponsePost{
@@ -319,6 +320,7 @@ func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
 		offerResponse = append(offerResponse, orderdto.OfferResponse{
 			ID:       data.ID,
 			ClientID: data.ClientID,
+			Title:    data.Title,
 			ClientUser: userdto.UserProfileResponse{
 				Email: data.ClientUser.Email,
 				Profile: profiledto.ProfileResponsePost{
