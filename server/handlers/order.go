@@ -8,7 +8,9 @@ import (
 	"time"
 	orderdto "waysgallery/dto/order"
 	photoprojectdto "waysgallery/dto/photo_project"
+	profiledto "waysgallery/dto/profile"
 	dto "waysgallery/dto/result"
+	userdto "waysgallery/dto/user"
 	"waysgallery/models"
 	"waysgallery/repositories"
 
@@ -94,7 +96,7 @@ func (h *handlerOrder) FindOrder(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: orders,
+		Data: convertOrderResponse(orders),
 	})
 }
 
@@ -111,7 +113,7 @@ func (h *handlerOrder) FindOffer(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dto.SuccessResult{
 		Code: http.StatusOK,
-		Data: offers,
+		Data: convertOfferResponse(offers),
 	})
 }
 
@@ -287,4 +289,46 @@ func (h *handlerOrder) GetFinishedProject(c echo.Context) error {
 		Data: order,
 	})
 
+}
+
+func convertOrderResponse(o []models.Order) []orderdto.OrderResponse {
+	var orderResponse []orderdto.OrderResponse
+	for _, data := range o {
+		orderResponse = append(orderResponse, orderdto.OrderResponse{
+			ID:       data.ID,
+			VendorID: data.VendorID,
+			VendorUser: userdto.UserProfileResponse{
+				Email: data.VendorUser.Email,
+				Profile: profiledto.ProfileResponsePost{
+					Name:           data.VendorUser.Profile.Name,
+					ProfilePicture: data.VendorUser.Profile.ProfilePicture,
+				},
+			},
+			StartDate: data.StartDate,
+			EndDate:   data.EndDate,
+			Price:     data.Price,
+		})
+	}
+	return orderResponse
+}
+
+func convertOfferResponse(o []models.Order) []orderdto.OfferResponse {
+	var offerResponse []orderdto.OfferResponse
+	for _, data := range o {
+		offerResponse = append(offerResponse, orderdto.OfferResponse{
+			ID:       data.ID,
+			ClientID: data.ClientID,
+			ClientUser: userdto.UserProfileResponse{
+				Email: data.ClientUser.Email,
+				Profile: profiledto.ProfileResponsePost{
+					Name:           data.VendorUser.Profile.Name,
+					ProfilePicture: data.VendorUser.Profile.ProfilePicture,
+				},
+			},
+			StartDate: data.StartDate,
+			EndDate:   data.EndDate,
+			Price:     data.Price,
+		})
+	}
+	return offerResponse
 }
