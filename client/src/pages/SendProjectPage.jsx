@@ -84,7 +84,7 @@ export default function SendProject() {
             const response = await API.patch(
                 '/order/send-project/' + id, formData, config
             );
-            console.log(response)
+         
             setIsLoading(false)
             clearImageHolder()
             navigate("/order")

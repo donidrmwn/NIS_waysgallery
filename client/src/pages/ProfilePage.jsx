@@ -130,7 +130,7 @@ export default function ProfilePage() {
             refetchFollow()
             refetchFollower()
             setIsLoading(false)
-            console.log(response)
+           
         } catch (error) {
             setIsLoading(false)
             console.log(error)

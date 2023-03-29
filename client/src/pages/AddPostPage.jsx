@@ -74,7 +74,7 @@ export default function AddPostPage() {
                 },
             };
             const formData = new FormData();
-            
+
             formData.set('main_image', !mainImage ? "" : mainImage)
             formData.set('image_2', !image2 ? "" : image2)
             formData.set('image_3', !image3 ? "" : image3)
@@ -82,12 +82,12 @@ export default function AddPostPage() {
             formData.set('title', form.title);
             formData.set('description', form.description);
 
-            const response = await API.post(
+            await API.post(
                 '/post/user', formData, config
             );
             setIsLoading(false)
             clearImageHolder()
-            console.log(response)
+
             navigate("/home")
         } catch (error) {
             console.log(error)

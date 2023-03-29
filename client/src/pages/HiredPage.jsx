@@ -66,7 +66,6 @@ export default function HiredPage() {
             const response = await API.post(
                 '/order/' + id, formData, config
             );
-            console.log(response)
             setIsLoading(false)
             handleShowModalSuccessOffer()
         } catch (error) {

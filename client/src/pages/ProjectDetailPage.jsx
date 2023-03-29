@@ -16,7 +16,7 @@ export default function ProjectDetail() {
     const [isLoading, setIsLoading] = useState(true)
     let { data: projectDetail } = useQuery("projectDetailCache", async () => {
         const response = await API.get("/order/finished-project/" + id);
-        console.log(response)
+      
         setIsLoading(false)
 
         return response.data.data;
@@ -33,7 +33,7 @@ export default function ProjectDetail() {
     )
 
     function openImage() {
-        console.log(projectDetail)
+  
         let alink = document.createElement('a');
         projectDetail?.photo_projects?.map((element, index) => {
             alink.href = element.photo_project;
@@ -44,7 +44,7 @@ export default function ProjectDetail() {
     }
     const handleStatus = useMutation(async (status) => {
         try {
-            console.log(status)
+        
             setIsLoading(true)
             const config = {
                 headers: {
@@ -55,8 +55,8 @@ export default function ProjectDetail() {
                 status: status
             }
             const body = JSON.stringify(data)
-            const response = await API.patch("/order/my-order/" + projectDetail?.id, body, config);
-            console.log(response)
+            await API.patch("/order/my-order/" + projectDetail?.id, body, config);
+
             refetch()
             setIsLoading(false)
             navigate("/order")

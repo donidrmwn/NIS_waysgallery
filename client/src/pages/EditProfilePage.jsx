@@ -103,9 +103,9 @@ export default function EditProfilePage() {
             const response = await API.patch(
                 '/profile', formData, config
             );
-            console.log(response.data)
+
             setIsLoading(false);
-            navigate("/profile/"+state.user.id)
+            navigate("/profile/" + state.user.id)
         } catch (error) {
             console.log(error)
             setIsLoading(false)
@@ -127,7 +127,7 @@ export default function EditProfilePage() {
             );
             refetch()
             setIsLoadingProfilePicture(false)
-            console.log(response)
+
         } catch (error) {
             console.log(error)
             setIsLoadingProfilePicture(false)
@@ -149,7 +149,7 @@ export default function EditProfilePage() {
             );
             refetch()
             setIsLoadingBestArt(false)
-            console.log(response)
+
         } catch (error) {
             console.log(error)
             setIsLoadingBestArt(false)

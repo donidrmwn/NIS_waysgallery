@@ -83,7 +83,7 @@ export default function OrderPage() {
 
         const handleStatus = useMutation(async (status) => {
             try {
-                console.log(status)
+
 
                 const config = {
                     headers: {
@@ -94,9 +94,9 @@ export default function OrderPage() {
                     status: status
                 }
                 const body = JSON.stringify(data)
-                const response = await API.patch(endPoint + id, body, config);
+                await API.patch(endPoint + id, body, config);
                 refetch()
-            
+
             } catch (error) {
                 console.log(error)
             }
@@ -226,7 +226,7 @@ export default function OrderPage() {
                 orderDetail={orderDetail}
                 show={showModalViewProject}
                 onHide={handleCloseModalViewProject}
-                
+
             />
         </>
     )
