@@ -17,6 +17,7 @@ export default function HomePage() {
     const [searchPostName, setSearchPostName] = useState(null)
 
 
+
     let { data: posts, refetch } = useQuery("postsCache", async () => {
         const response = await API.get(endPoint);
         setIsLoading(false)
@@ -77,7 +78,7 @@ export default function HomePage() {
     }, [searchPostName])
 
     useEffect(() => {
-        if (searchPostName) {
+        if (searchPostName != "") {
             handleShowToday()
         }
     }, [])
@@ -115,6 +116,7 @@ export default function HomePage() {
                                     name="product_name"
                                     onChange={(e) => { setSearchPostName(e.target.value) }}
                                     type='text'
+                                    value={searchPostName}
                                     placeholder='Search'
                                     autoComplete='false'
                                 />
