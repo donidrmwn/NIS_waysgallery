@@ -90,8 +90,7 @@ func (h *handlerAuth) Register(c echo.Context) error {
 }
 
 func (h *handlerAuth) Login(c echo.Context) error {
-	// request := new(authdto.LoginRequest)
-	var request *authdto.LoginRequest
+	request := new(authdto.LoginRequest)
 	if err := c.Bind(request); err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
 			Code:    http.StatusBadRequest,
