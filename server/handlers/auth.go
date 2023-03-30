@@ -142,7 +142,7 @@ func (h *handlerAuth) Login(c echo.Context) error {
 }
 
 func (h *handlerAuth) CheckAuth(c echo.Context) error {
-	userLogin := c.Get("userLogi")
+	userLogin := c.Get("userLogin")
 	userId := userLogin.(jwt.MapClaims)["id"].(float64)
 
 	user, _ := h.AuthRepository.CheckAuth(int(userId))
