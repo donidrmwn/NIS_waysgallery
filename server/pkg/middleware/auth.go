@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"strings"
 	dto "waysgallery/dto/result"
 	jwtToken "waysgallery/pkg/jwt"
 
@@ -24,8 +25,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 		}
 
-		// token = strings.Split(token, " ")[1]
-
+		token = strings.Split(token, " ")[1]
 		claims, err := jwtToken.DecodeToken(token)
 
 		if err != nil {
