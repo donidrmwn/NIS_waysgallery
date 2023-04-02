@@ -7,7 +7,7 @@ type PhotoProject struct {
 	OrderID      int           `json:"order_id" gorm:"type: integer"`
 	LineNo       int           `json:"line_no" gorm:"type: integer"`
 	PhotoProject string        `json:"photo_project" gorm:"type: varchar(255)"`
-	Order        OrderResponse `json:"-" gorm:"foreignKey:OrderID"`
+	Order        OrderResponse `json:"-" gorm:"foreignKey:OrderID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	CreatedAt    time.Time     `json:"-"`
 	UpdatedAt    time.Time     `json:"-"`
 }

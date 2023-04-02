@@ -21,10 +21,7 @@ type handlerAuth struct {
 	ProfileRepository repositories.ProfileRepository
 }
 
-func HandlerAuth(
-	AuthRepository repositories.AuthRepository,
-	ProfileRepository repositories.ProfileRepository,
-) *handlerAuth {
+func HandlerAuth(AuthRepository repositories.AuthRepository, ProfileRepository repositories.ProfileRepository) *handlerAuth {
 	return &handlerAuth{
 		AuthRepository,
 		ProfileRepository,
