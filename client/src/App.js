@@ -68,7 +68,7 @@ function App() {
 
     <>
       {isLoading ? null :
-        <Container style={{ backgroundColor: "#F9F9F9" }} fluid="true" className='px-5 h-100'>
+        <Container style={{ backgroundColor: "#F9F9F9" }} fluid className='h-100'>
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route element={<><PrivateRouteLogin /></>}>

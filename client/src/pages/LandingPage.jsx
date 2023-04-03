@@ -59,7 +59,7 @@ export default function LandingPage() {
             position: "absolute",
             width: "25em",
             height: "25em",
-            right: "-3em",
+            right: "-1em",
             bottom: "-3em",
 
         }
@@ -81,12 +81,12 @@ export default function LandingPage() {
     }
     return (
         <>
-            <Container fluid="true" className='position-relative '>
+            <Container fluid  className='position-relative '>
                 <Image src='/Vector 1.png' style={style.vector1} />
                 <Image src='/Vector 2.png' style={style.vector2} />
                 <Image src='/Vector 3.png' style={style.vector3} />
-                <Row fluid="true" className='w-100 vh-100 d-flex  align-items-center mt-5' style={{ zIndex: -1 }}>
-                    <Col sm="12" md="12" lg="6" className='d-grid justify-content-center align-items-center '>
+                <Row  className='w-100 vh-100 d-flex  align-items-center mt-5' style={{ zIndex: -1 }}>
+                    <Col sm="12" md="12" lg="6" className='px-5 d-grid justify-content-center align-items-center '>
                         <Row className='position-relative'>
                             <BrandLanding fontSize={"100px"} />
                             <BrandImage
@@ -107,7 +107,7 @@ export default function LandingPage() {
 
                     </Col>
                     <Col sm="12" md="12" lg="6" className='d-flex justify-content-center align-items-center mt-4'>
-                        <Image className='w-100' src='/g10.png' />
+                        <Image className='w-75' src='/g10.png' />
                     </Col>
                 </Row>
             </Container>
